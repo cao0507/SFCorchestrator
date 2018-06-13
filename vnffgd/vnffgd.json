@@ -1,0 +1,70 @@
+{
+    "vnffgd": {
+        "tenant_id": "3a7a49ccfef943ebae2457feabc2931e",
+        "name": "VNFFGD",
+        "template": {
+            "vnffgd": {
+                "tosca_definitions_version": "tosca_simple_profile_for_nfv_1_0_0",
+                "description": "Sample VNFFG template",
+                "topology_template": {
+                    "node_templates": {
+                        "Forwarding_path1": {
+                            "type": "tosca.nodes.nfv.FP.Tacker",
+                            "description": "creates path (CP1->CP2)",
+                            "properties": {
+                                "policy": {
+                                    "type": "ACL",
+                                    "criteria": [
+                                        {
+                                            "network_src_port_id": "2da13dd9-12c1-4fdc-beb9-b21ed4df14f8",
+                                            "ip_dst_prefix": "10.0.0.17/32"
+                                        }
+                                    ]
+                                },
+                                "path": [
+                                    {
+                                        "capability": "CP1",
+                                        "forwarder": "VNFD1"
+                                    },
+                                    {
+                                        "capability": "CP2",
+                                        "forwarder": "VNFD2"
+                                    }
+                                ],
+                                "id": 51
+                            }
+                        }
+                    },
+                    "description": "Sample VNFFG template",
+                    "groups": {
+                        "VNFFG1": {
+                            "type": "tosca.groups.nfv.VNFFG",
+                            "description": "HTTP to Corporate Net",
+                            "members": [
+                                "Forwarding_path1"
+                            ],
+                            "properties": {
+                                "vendor": "tacker",
+                                "connection_point": [
+                                    "CP1",
+                                    "CP2"
+                                ],
+                                "version": 1.0,
+                                "constituent_vnfs": [
+                                    "VNFD1",
+                                    "VNFD2"
+                                ],
+                                "number_of_endpoints": 2,
+                                "dependent_virtual_link": [
+                                    "VL1",
+                                    "VL2"
+                                ]
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "description": "sample vnffgd"
+    }
+}
