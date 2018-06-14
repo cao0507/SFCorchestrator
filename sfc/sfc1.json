@@ -16,7 +16,7 @@
             "name": "vnf2",
             "type": "IDS",
             "flavor": {
-                "cpu": "1",
+                "cpu": 1,
                 "memory": 2,
                 "disk": 15
             },
@@ -26,7 +26,7 @@
             "name": "vnf3",
             "type": "IDS",
             "flavor": {
-                "cpu": "1",
+                "cpu": 1,
                 "memory": 2,
                 "disk": 15
             },
@@ -36,7 +36,7 @@
             "name": "vnf4",
             "type": "IDS",
             "flavor": {
-                "cpu": "1",
+                "cpu": 1,
                 "memory": 2,
                 "disk": 15
             },
@@ -46,7 +46,7 @@
             "name": "vnf2",
             "type": "IDS",
             "flavor": {
-                "cpu": "1",
+                "cpu": 1,
                 "memory": 2,
                 "disk": 15
             },
@@ -56,7 +56,7 @@
             "name": "vnf5",
             "type": "IDS",
             "flavor": {
-                "cpu": "1",
+                "cpu": 1,
                 "memory": 2,
                 "disk": 15
             },
