@@ -4,6 +4,7 @@
     "VNF": [
         {
             "name": "vnf1",
+            "id": "1",
             "type": "FW",
             "flavor": {
                 "cpu": 1,
@@ -14,6 +15,7 @@
         },
         {
             "name": "vnf2",
+            "id": "2",
             "type": "IDS",
             "flavor": {
                 "cpu": "1",
