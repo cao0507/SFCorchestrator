@@ -9,7 +9,8 @@ class jsonparser(object):
         f.close()
 
     def get_vnf_list(self):
-        return [vnf["name"] for vnf in self.req["VNF"]]
+        #return [vnf["name"] for vnf in self.req["VNF"]]
+        return self.req["VNF"]
 
     def get_constrain_list(self):
         return [[cons["former"], cons["later"]]
