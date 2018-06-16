@@ -41,7 +41,7 @@
                             "properties": {
                                 "availability_zone": "nova:compute1",
                                 "image": "IDS_image",
-                                "user_data": "alert tcp !$HOME_NET any -> $HOME_NET 22 (flags: S; msg:\"Possible TCP DoS\"; flow: stateless; \nthreshold: type both, track by_src, count 70, seconds 10; sid:10001;rev:1;)"
+                                "user_data": "mkdir /home/openstack/hello"
                             },
                             "type": "tosca.nodes.nfv.VDU.Tacker"
                         },
@@ -58,7 +58,7 @@
             }
         },
         "description": "Sample",
-        "name": "VNFD2",
+        "name": "vnf2_Description",
         "service_types": [
             {
                 "service_type": "vnfd"
