@@ -1,4 +1,3 @@
-
 class mapper(object):
     def mapper_func(self):
 
