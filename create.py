@@ -2,8 +2,9 @@ import json
 import tacker
 from parse_request import jsonparser
 from configure_file import configure_file
-from mapper import mapper
+import mapper
 import orchestrator
+from openstack import hypervisor
 import time
 
 def create(sfc_file):
@@ -24,6 +25,9 @@ def create(sfc_file):
     print "====================================================================\n"
 
     req = jsonparser(sfc_file)
+    hypervisor = hypervisor()
+    conf = configure_file()
+
     vnf_name_list = req.get_vnf_list()
     constrains = req.get_constrain_list()
     chain = orchestrator.orchestrate(vnf_name_list, constrains)
@@ -38,18 +42,13 @@ def create(sfc_file):
         vnf_detail_brief["disk"] = vnf_detail["flavor"]["disk"]
         sfc_detail.append(vnf_detail_brief)
     target = req.get_sfc_target()
-    hosts = 
-    mapper_output = mapper.mapper
+    hosts = hypervisor.get_hosts_detail()
+    mapper_output = mapper.sfc_mapper(sfc_detail, hosts, target)
     
     sfc_name = req.get_sfc_name()
     sfc_mapper = {}
-    # mapper_output = {
-    #     "vnf1": "nova:compute2",
-    #     "vnf2": "nova:compute1"
-    # }
     sfc_mapper["name"] = sfc_name
     sfc_mapper["mapper"] = mapper_output
-    conf = configure_file()
     
     # configure vnfd file
     vnfd = []
