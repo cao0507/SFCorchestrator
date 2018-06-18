@@ -1,50 +1,22 @@
 import json
-import requests
+import identity
+from openstack_requests import openstack_requests
 
 
-def get_token():
-    url = "http://192.168.1.127/identity/v3/auth/tokens"
-    values = {
-        "auth": {
-            "identity": {
-                "methods": [
-                    "password"
-                ],
-                "password": {
-                    "user": {
-                        "name": "admin",
-                        "domain": {
-                            "name": "Default"
-                        },
-                        "password": "openstack"
-                    }
-                }
-            },
-            "scope": {
-                "domain": {
-                    "name": "Default"
-                }
-            }
-        }
-    }
-    data = json.dumps(values)
-    r = requests.post(url, data)
-    token = r.headers.get('X-Subject-Token')
-    return token
+class hepervisor(object):
+    def __init__(self):
+        self.url = "http://192.168.1.30/compute/v2.1/os-hypervisors"
+        self.requests = openstack_requests()
 
-
-def list_hypervisors_details():
-    token = get_token()
-    url = "http://192.168.1.127/compute/v2.1/os-hypervisors/detail"
-    headers = {
-        "X-Auth-Token": token
-    }
-    r = requests.get(url, headers=headers).json()
-    for hypervisor in r["hypervisors"]:
-        print hypervisor["hypervisor_hostname"]
-        print hypervisor["vcpus"] - hypervisor["vcpus_used"]
-        print hypervisor["free_ram_mb"]
-        print hypervisor["free_disk_gb"]
-
-
-list_hypervisors_details()
+    def get_hosts_detail(self):
+        url = self.url + "/detail"
+        r = self.requests.get(url).json()
+        hosts = []
+        for hypervisor in r["hypervisors"]:
+            host = {}
+            host["name"] = "nava:"+hypervisor["hypervisor_hostname"]
+            host["cpu"] = hypervisor["vcpus"] - hypervisor["vcpus_used"]
+            host["memory"] = hypervisor["free_ram_mb"]
+            host["disk"] = hypervisor["free_disk_gb"]
+            hosts.append(host)
+        return hosts
