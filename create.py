@@ -4,7 +4,7 @@ from parse_request import jsonparser
 from configure_file import configure_file
 import mapper
 import orchestrator
-from openstack import hypervisor
+from openstack_api import hypervisor
 import time
 
 def create(sfc_file):
@@ -25,7 +25,7 @@ def create(sfc_file):
     print "====================================================================\n"
 
     req = jsonparser(sfc_file)
-    hypervisor = hypervisor()
+    hypervisor_instance = hypervisor()
     conf = configure_file()
 
     vnf_name_list = req.get_vnf_list()
@@ -42,14 +42,16 @@ def create(sfc_file):
         vnf_detail_brief["disk"] = vnf_detail["flavor"]["disk"]
         sfc_detail.append(vnf_detail_brief)
     target = req.get_sfc_target()
-    hosts = hypervisor.get_hosts_detail()
+    hosts = hypervisor_instance.get_hosts_detail()
     mapper_output = mapper.sfc_mapper(sfc_detail, hosts, target)
-    
+    print mapper_output    
+
     sfc_name = req.get_sfc_name()
     sfc_mapper = {}
     sfc_mapper["name"] = sfc_name
     sfc_mapper["mapper"] = mapper_output
     
+
     # configure vnfd file
     vnfd = []
     for vnf in vnf_name_list:
@@ -73,7 +75,7 @@ def create(sfc_file):
         vnfd_name = sfc_name + "_" + vnf + "_Description"
         vnfd_id = tacker_vnfd.get_vnfd_id(vnfd_name)
         tacker_vnf.create_vnf(vnf_name, vnfd_id)
-        time.sleep(30)
+        time.sleep(45)
     
     # create vnffgd
     tacker_vnffgd.create_vnffgd(vnffgd_file)
@@ -89,7 +91,7 @@ def create(sfc_file):
     vnffgd_name = sfc_name + "_vnffg_Description"
     vnffgd_id = tacker_vnffgd.get_vnffgd_id(vnffgd_name)
     tacker_vnffg.create_vnffg(vnffg_name, vnffgd_id, vnf_mapping)
-    time.sleep(20)
+    time.sleep(10)
 
     print "\n**************The VNFs list.****************"
     print tacker_vnf.list_vnf()

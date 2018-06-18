@@ -7,20 +7,20 @@
             "type": "FW_image",
             "flavor": {
                 "cpu": 1,
-                "memory": "1000 MB",
-                "disk": "10 GB"
+                "memory": 1000,
+                "disk": 10
             },
-            "rule": "mkdir /home/openstack/hello"
+            "rule": "sudo iptables -A FORWORD -p icmp -j REJECT"
         },
         {
             "name": "vnf2",
             "type": "IDS_image",
             "flavor": {
                 "cpu": 1,
-                "memory": "2000 M",
-                "disk": "15 GB"
+                "memory": 2000,
+                "disk": 15
             },
-            "rule": "mkdir /home/openstack/hello"
+            "rule": "alert tcp !$HOME_NET any -> $HOME_NET 22 (flags: S; msg:\"Possible TCP DoS\"; flow: stateless; \nthreshold: type both, track by_src, count 70, seconds 10; sid:10001;rev:1;)"
         }
     ],
     "constrain": [
@@ -36,7 +36,8 @@
         }
     ],
     "QoS": {
-        "Bandwidth": "10 M",
-        "delay": "20 ms"
-    }
+        "bandwidth": 10,
+        "delay": 2
+    },
+    "target": "cpu"
 }

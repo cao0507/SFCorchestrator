@@ -41,7 +41,7 @@
                             "properties": {
                                 "availability_zone": "nova:compute2",
                                 "image": "FW_image",
-                                "user_data": "mkdir /home/openstack/hello"
+                                "user_data": "sudo iptables -A FORWORD -p icmp -j REJECT"
                             },
                             "type": "tosca.nodes.nfv.VDU.Tacker"
                         },

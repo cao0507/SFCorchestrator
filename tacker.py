@@ -153,7 +153,7 @@ class vnffg(object):
         print json_r
 
     def delete_vnffg(self, vnffg_name):
-        vnffg_list = self.list_vnffg()
+        vnffg_id = self.get_vnffg_id(vnffg_name)
         url = self.url + "/" + vnffg_id
         r = self.requests.delete(url)
         if "204" in str(r):

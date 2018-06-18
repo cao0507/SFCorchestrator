@@ -33,7 +33,7 @@ def delete(sfc_file):
     for vnf_name in vnf_name_list:
         if sfc_name in vnf_name:
             tacker_vnf.delete_vnf(vnf_name)
-            time.sleep(30)
+            time.sleep(45)
 
     # delete vnfds
     for vnfd_name in vnfd_name_list:
@@ -45,7 +45,7 @@ def delete(sfc_file):
     for vnffg_name in vnffg_name_list:
         if sfc_name in vnffg_name:
             tacker_vnffg.delete_vnffg(vnffg_name)
-            time.sleep(20)
+            time.sleep(10)
 
     # delete vnffgd
     for vnffgd_name in vnffgd_name_list:

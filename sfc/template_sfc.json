@@ -4,7 +4,7 @@
     "VNF": [
         {
             "name": "vnf1",
-            "type": "FW",
+            "type": "FW_image",
             "flavor": {
                 "cpu": 1,
                 "memory": 1000,
@@ -14,7 +14,7 @@
         },
         {
             "name": "vnf2",
-            "type": "IDS",
+            "type": "IDS_image",
             "flavor": {
                 "cpu": 1,
                 "memory": 2000,
@@ -39,5 +39,5 @@
         "bandwidth": 10,
         "delay": 2
     },
-    "target": "bandwidth"
+    "target": "cpu"
 }
