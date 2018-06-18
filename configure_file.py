@@ -1,9 +1,9 @@
 import json
-from parse_request import jsonparser
+#from parse_request import jsonparser
 
 class configure_file(object):
-    def __init__(self, file_name):
-        self.req = jsonparser(file_name)
+    #def __init__(self, file_name):
+    #    self.req = jsonparser(file_name)
 
     def configure_vnfd(self, vnf, sfc_mapper):  # sfc_mapper = {"name": "sfc1", "mapper": {"vnf1": "nova:compute2", "vnf2": "nova:compute1"}}
         f = open("vnfd/template_vnfd.json", 'r')
@@ -32,7 +32,7 @@ class configure_file(object):
         connection_point = []
         constituent_vnfs = []
         dependent_virtual_link = []
-        for vnf in sfc["chain"]:
+        for vnf in sfc_orchestrator["chain"]:
             path.append({"capability": "CP1", "forwarder": sfc_orchestrator["name"] + "_" + vnf + "_Description"})
             connection_point.append("CP1")
             constituent_vnfs.append(sfc_orchestrator["name"] + "_" + vnf + "_Description")

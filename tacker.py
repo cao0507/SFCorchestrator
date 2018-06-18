@@ -5,7 +5,7 @@ from openstack_requests import openstack_requests
 
 class vnf(object):
     def __init__(self):
-        self.url = "http://192.168.1.91:9890/v1.0/vnfs"
+        self.url = "http://192.168.1.30:9890/v1.0/vnfs"
         self.requests = openstack_requests()
 
     def list_vnf(self):
@@ -59,7 +59,7 @@ class vnf(object):
 
 class vnfd(object):
     def __init__(self):
-        self.url = "http://192.168.1.91:9890/v1.0/vnfds"
+        self.url = "http://192.168.1.30:9890/v1.0/vnfds"
         self.requests = openstack_requests()
 
     def list_vnfd(self):
@@ -112,7 +112,7 @@ class vnfd(object):
 
 class vnffg(object):
     def __init__(self):
-        self.url = "http://192.168.1.91:9890/v1.0/vnffgs"
+        self.url = "http://192.168.1.30:9890/v1.0/vnffgs"
         self.requests = openstack_requests()
 
     def list_vnffg(self):
@@ -168,7 +168,7 @@ class vnffg(object):
 
 class vnffgd(object):
     def __init__(self):
-        self.url = "http://192.168.1.91:9890/v1.0/vnffgds"
+        self.url = "http://192.168.1.30:9890/v1.0/vnffgds"
         self.requests = openstack_requests()
 
     def list_vnffgd(self):
