@@ -19,8 +19,8 @@
                                     "CP1"
                                 ],
                                 "constituent_vnfs": [
-                                    "vnf2_Description",
-                                    "vnf1_Description"
+                                    "sfc1_vnf1_Description",
+                                    "sfc1_vnf2_Description"
                                 ],
                                 "dependent_virtual_link": [
                                     "VL1",
@@ -41,18 +41,18 @@
                                 "path": [
                                     {
                                         "capability": "CP1",
-                                        "forwarder": "vnf2_Description"
+                                        "forwarder": "sfc1_vnf1_Description"
                                     },
                                     {
                                         "capability": "CP1",
-                                        "forwarder": "vnf1_Description"
+                                        "forwarder": "sfc1_vnf2_Description"
                                     }
                                 ],
                                 "policy": {
                                     "criteria": [
                                         {
                                             "ip_dst_prefix": "10.0.0.17/32",
-                                            "network_src_port_id": "2da13dd9-12c1-4fdc-beb9-b21ed4df14f8"
+                                            "network_src_port_id": "311cd7c4-1285-4ad6-9e69-c36cf6f72355"
                                         }
                                     ],
                                     "type": "ACL"
@@ -65,6 +65,6 @@
                 "tosca_definitions_version": "tosca_simple_profile_for_nfv_1_0_0"
             }
         },
-        "tenant_id": "3a7a49ccfef943ebae2457feabc2931e"
+        "tenant_id": "884a98138b784608bdbb03ff3cb958fa"
     }
 }

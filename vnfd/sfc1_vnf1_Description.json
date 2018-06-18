@@ -58,12 +58,12 @@
             }
         },
         "description": "Sample",
-        "name": "vnf1_Description",
+        "name": "sfc1_vnf1_Description",
         "service_types": [
             {
                 "service_type": "vnfd"
             }
         ],
-        "tenant_id": "3a7a49ccfef943ebae2457feabc2931e"
+        "tenant_id": "884a98138b784608bdbb03ff3cb958fa"
     }
 }

@@ -5,7 +5,7 @@ from openstack_requests import openstack_requests
 
 class vnf(object):
     def __init__(self):
-        self.url = "http://192.168.1.91:9890/v1.0/vnfs"
+        self.url = "http://192.168.1.30:9890/v1.0/vnfs"
         self.requests = openstack_requests()
 
     def list_vnf(self):
@@ -14,6 +14,12 @@ class vnf(object):
         for vnf in r["vnfs"]:
             vnfs[vnf["name"].encode("utf-8")] = vnf["id"].encode("utf-8")
         return vnfs
+     
+    def get_vnf_id(self, vnf_name):
+        r = self.requests.get(self.url).json()
+        for vnf in r["vnfs"]:
+            if vnf["name"] == vnf_name:
+                return vnf["id"]
 
     def create_vnf(self, vnf_name, vnfd_id):
         values = {
@@ -30,8 +36,7 @@ class vnf(object):
             print "Creating %s meets ERROR!" % vnf_name
 
     def show_vnf(self, vnf_name):
-        vnf_list = self.list_vnf()
-        vnf_id = vnf_list[vnf_name]
+        vnf_id = self.get_vnf_id(vnf_name)
         url = self.url + "/" + vnf_id
         r = self.requests.get(url).json()
         json_r = json.dumps(r, sort_keys=True, indent=4, separators=(',',': '))
@@ -39,8 +44,7 @@ class vnf(object):
 
 
     def delete_vnf(self, vnf_name):
-        vnf_list = self.list_vnf()
-        vnf_id = vnf_list[vnf_name]
+        vnf_id = self.get_vnf_id(vnf_name)
         url = self.url + "/" + vnf_id
         r = self.requests.delete(url)
         if "204" in str(r):
@@ -55,7 +59,7 @@ class vnf(object):
 
 class vnfd(object):
     def __init__(self):
-        self.url = "http://192.168.1.91:9890/v1.0/vnfds"
+        self.url = "http://192.168.1.30:9890/v1.0/vnfds"
         self.requests = openstack_requests()
 
     def list_vnfd(self):
@@ -64,6 +68,12 @@ class vnfd(object):
         for vnfd in r["vnfds"]:
             vnfds[vnfd["name"].encode("utf-8")] = vnfd["id"].encode("utf-8")
         return vnfds
+
+    def get_vnfd_id(self, vnfd_name):
+        r = self.requests.get(self.url).json()
+        for vnfd in r["vnfds"]:
+            if vnfd["name"] == vnfd_name:
+                return vnfd["id"]
 
     def create_vnfd(self, vnfd_file):
         f = open("vnfd/" + vnfd_file, 'r')
@@ -80,16 +90,14 @@ class vnfd(object):
             print "Internal Server Error."
         
     def show_vnfd(self, vnfd_name):
-        vnfd_list = self.list_vnfd()
-        vnfd_id = vnfd_list[vnfd_name]
+        vnfd_id = self.get_vnfd_id(vnfd_name) 
         url = self.url + "/" + vnfd_id
         r = self.requests.get(url).json()
         json_r = json.dumps(r, sort_keys=True, indent=4, separators=(',',': '))
         print json_r
 
     def delete_vnfd(self, vnfd_name):
-        vnfd_list = self.list_vnfd()
-        vnfd_id = vnfd_list[vnfd_name]
+        vnfd_id = self.get_vnfd_id(vnfd_name) 
         url = self.url + "/" + vnfd_id
         r = self.requests.delete(url)
         if "204" in str(r):
@@ -104,7 +112,7 @@ class vnfd(object):
 
 class vnffg(object):
     def __init__(self):
-        self.url = "http://192.168.1.91:9890/v1.0/vnffgs"
+        self.url = "http://192.168.1.30:9890/v1.0/vnffgs"
         self.requests = openstack_requests()
 
     def list_vnffg(self):
@@ -113,6 +121,12 @@ class vnffg(object):
         for vnffg in r["vnffgs"]:
             vnffgs[vnffg["name"].encode("utf-8")] = vnffg["id"].encode("utf-8")
         return vnffgs
+
+    def get_vnffg_id(self, vnffg_name):
+        r = self.requests.get(self.url).json()
+        for vnffg in r["vnffgs"]:
+            if vnffg["name"] == vnffg_name:
+                return vnffg["id"]
 
     def create_vnffg(self, vnffg_name, vnffgd_id, vnf_mapping):
         values = {
@@ -132,8 +146,7 @@ class vnffg(object):
 
 
     def show_vnffg(self, vnffg_name):
-        vnffg_list = self.list_vnffg()
-        vnffg_id = vnffg_list[vnffg_name]
+        vnffg_id = self.get_vnffg_id(vnffg_name)
         url = self.url + "/" + vnffg_id
         r = self.requests.get(url).json()
         json_r = json.dumps(r, sort_keys=True, indent=4, separators=(',',': '))
@@ -141,7 +154,6 @@ class vnffg(object):
 
     def delete_vnffg(self, vnffg_name):
         vnffg_list = self.list_vnffg()
-        vnffg_id = vnffg_list[vnffg_name]
         url = self.url + "/" + vnffg_id
         r = self.requests.delete(url)
         if "204" in str(r):
@@ -156,7 +168,7 @@ class vnffg(object):
 
 class vnffgd(object):
     def __init__(self):
-        self.url = "http://192.168.1.91:9890/v1.0/vnffgds"
+        self.url = "http://192.168.1.30:9890/v1.0/vnffgds"
         self.requests = openstack_requests()
 
     def list_vnffgd(self):
@@ -165,6 +177,12 @@ class vnffgd(object):
         for vnffgd in r["vnffgds"]:
             vnffgds[vnffgd["name"].encode("utf-8")] = vnffgd["id"].encode("utf-8")
         return vnffgds
+
+    def get_vnffgd_id(self, vnffgd_name):
+        r = self.requests.get(self.url).json()
+        for vnffgd in r["vnffgds"]:
+            if vnffgd["name"] == vnffgd_name:
+                return vnffgd["id"]
 
     def create_vnffgd(self, vnffgd_file):
         f = open("vnffgd/" + vnffgd_file, 'r')
@@ -181,16 +199,14 @@ class vnffgd(object):
             print "Internal Server Error."
         
     def show_vnffgd(self, vnffgd_name):
-        vnffgd_list = self.list_vnffgd()
-        vnffgd_id = vnffgd_list[vnffgd_name]
+        vnffgd_id = self.get_vnffgd_id(vnffgd_name)
         url = self.url + "/" + vnffgd_id
         r = self.requests.get(url).json()
         json_r = json.dumps(r, sort_keys=True, indent=4, separators=(',',': '))
         print json_r
 
     def delete_vnffgd(self, vnffgd_name):
-        vnffgd_list = self.list_vnffgd()
-        vnffgd_id = vnffgd_list[vnffgd_name]
+        vnffgd_id = self.get_vnffgd_id(vnffgd_name)
         url = self.url + "/" + vnffgd_id
         r = self.requests.delete(url)
         if "204" in str(r):
