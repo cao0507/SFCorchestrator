@@ -33,19 +33,18 @@ def get_token():
     return token
 
 
-def list_images():
+def list_hypervisors_details():
     token = get_token()
-    url = "http://192.168.1.127/image/v2/images"
+    url = "http://192.168.1.127/compute/v2.1/os-hypervisors/detail"
     headers = {
         "X-Auth-Token": token
     }
-    r = requests.get(url, headers=headers)
-    images = []
-    for image in r.json()["images"]:
-        images.append(image["name"])
-    print images
-    # f = open("/home/openstack/data.txt", "w")
-    # f.write(str(images))
-    # f.close()
+    r = requests.get(url, headers=headers).json()
+    for hypervisor in r["hypervisors"]:
+        print hypervisor["hypervisor_hostname"]
+        print hypervisor["vcpus"] - hypervisor["vcpus_used"]
+        print hypervisor["free_ram_mb"]
+        print hypervisor["free_disk_gb"]
 
-list_images()
+
+list_hypervisors_details()
