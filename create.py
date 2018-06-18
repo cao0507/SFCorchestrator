@@ -6,7 +6,7 @@ from mapper import mapper
 import orchestrator
 import time
 
-def create(template_sfc_file):
+def create(sfc_file):
     tacker_vnf = tacker.vnf()
     tacker_vnfd = tacker.vnfd()
     tacker_vnffg = tacker.vnffg()
@@ -23,14 +23,15 @@ def create(template_sfc_file):
     print "\n===================================================================="
     print "====================================================================\n"
 
-    req = jsonparser(template_sfc_file)
+    req = jsonparser(sfc_file)
     vnf_name_list = req.get_vnf_list()
+    sfc_name = req.get_sfc_name()
     sfc_mapper = {}
     mapper_output = {
         "vnf1": "nova:compute2",
         "vnf2": "nova:compute1"
     }
-    sfc_mapper["name"] = req.get_sfc_name()
+    sfc_mapper["name"] = sfc_name
     sfc_mapper["mapper"] = mapper_output
     conf = configure_file()
     
@@ -43,7 +44,7 @@ def create(template_sfc_file):
     
     # configute vnffgd file
     sfc_orchestrator = {}
-    sfc_orchestrator["name"] = req.get_sfc_name()
+    sfc_orchestrator["name"] = sfc_name
     constrains = req.get_constrain_list()
     chain = orchestrator.orchestrate(vnf_name_list, constrains)
     sfc_orchestrator["chain"] = chain
@@ -55,8 +56,8 @@ def create(template_sfc_file):
 
     # create vnfs
     for vnf in vnf_name_list:
-        vnf_name = sfc["name"] + "_" + vnf
-        vnfd_name = sfc["name"] + "_" + vnf + "_Description"
+        vnf_name = sfc_name+ "_" + vnf
+        vnfd_name = sfc_name + "_" + vnf + "_Description"
         vnfd_id = tacker_vnfd.get_vnfd_id(vnfd_name)
         tacker_vnf.create_vnf(vnf_name, vnfd_id)
         time.sleep(30)
@@ -67,14 +68,14 @@ def create(template_sfc_file):
     # create vnffg
     vnf_mapping = {}
     for vnf in vnf_name_list:
-        vnf_name = sfc["name"] + "_" + vnf
-        vnfd_name = sfc["name"] + "_" + vnf + "_Description"
+        vnf_name = sfc_name + "_" + vnf
+        vnfd_name = sfc_name + "_" + vnf + "_Description"
         vnf_id = tacker_vnf.get_vnf_id(vnf_name)
         vnf_mapping[vnfd_name] = vnf_id
-    vnffg_name = sfc["name"] + "_vnffg"
-    vnffgd_name = sfc["name"] + "_vnffg_Description"
+    vnffg_name = sfc_name + "_vnffg"
+    vnffgd_name = sfc_name + "_vnffg_Description"
     vnffgd_id = tacker_vnffgd.get_vnffgd_id(vnffgd_name)
-    tacker_vnffgd.create_vnffgd(vnffg_name, vnffgd_id, vnf_mapping)
+    tacker_vnffg.create_vnffg(vnffg_name, vnffgd_id, vnf_mapping)
     time.sleep(20)
 
     print "\n**************The VNFs list.****************"
@@ -87,3 +88,6 @@ def create(template_sfc_file):
     print tacker_vnffgd.list_vnffgd()
     print "\n===================================================================="
     print "====================================================================\n"
+
+if __name__ == "__main__":
+    create("sfc1.json")

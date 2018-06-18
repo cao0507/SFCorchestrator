@@ -1,6 +1,6 @@
 {
   "vnfd": {
-    "tenant_id": "3a7a49ccfef943ebae2457feabc2931e",
+    "tenant_id": "884a98138b784608bdbb03ff3cb958fa",
     "name": "VNFD1",
     "description": "Sample",
     "service_types": [

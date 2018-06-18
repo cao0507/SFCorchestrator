@@ -22,21 +22,36 @@ def delete(sfc_file):
 
     req = jsonparser(sfc_file)
     sfc_name = req.get_sfc_name()
-    vnf_name_list = req.get_vnf_list()
-    
-    # delete vnfs and vnfds
-    for vnf_name in vnf_name_list:
-        tacker_vnf.delete_vnf(vnf_name)
-        time.sleep(30)
-        vnfd_name = sfc_name + "_" + vnf_name + "_Description"
-        tacker_vnfd.delete_vnfd(vnfd_name)
 
-    # delete vnffg and vnffgd
-    vnffg_name = sfc_name + "_vnffg"
-    vnffgd_name = sfc_name + "_vnffg_Description"
-    tacker_vnffg.delete_vnffg(vnffg_name)
-    time.sleep(20)
-    tacker_vnffgd.delete_vnffgd(vnffgd_name)
+    vnf_name_list = tacker_vnf.list_vnf().keys()
+    vnfd_name_list = tacker_vnfd.list_vnfd().keys()
+    vnffg_name_list = tacker_vnffg.list_vnffg().keys()
+    vnffgd_name_list = tacker_vnffgd.list_vnffgd().keys()
+    
+    
+    # delete vnfs
+    for vnf_name in vnf_name_list:
+        if sfc_name in vnf_name:
+            tacker_vnf.delete_vnf(vnf_name)
+            time.sleep(30)
+
+    # delete vnfds
+    for vnfd_name in vnfd_name_list:
+        if sfc_name in vnfd_name:
+            tacker_vnfd.delete_vnfd(vnfd_name)
+            time.sleep(5)
+
+    # delete vnffg
+    for vnffg_name in vnffg_name_list:
+        if sfc_name in vnffg_name:
+            tacker_vnffg.delete_vnffg(vnffg_name)
+            time.sleep(20)
+
+    # delete vnffgd
+    for vnffgd_name in vnffgd_name_list:
+        if sfc_name in vnffgd_name:
+            tacker_vnffgd.delete_vnffgd(vnffgd_name)
+
 
     print "\n**************The VNFs list.****************"
     print tacker_vnf.list_vnf()
@@ -48,3 +63,7 @@ def delete(sfc_file):
     print tacker_vnffgd.list_vnffgd()
     print "\n===================================================================="
     print "====================================================================\n"
+
+
+if __name__ == "__main__":
+    delete("sfc1.json")

@@ -1,6 +1,6 @@
 {
     "vnffgd": {
-        "tenant_id": "3a7a49ccfef943ebae2457feabc2931e",
+        "tenant_id": "884a98138b784608bdbb03ff3cb958fa",
         "name": "VNFFGD",
         "template": {
             "vnffgd": {
@@ -16,7 +16,7 @@
                                     "type": "ACL",
                                     "criteria": [
                                         {
-                                            "network_src_port_id": "2da13dd9-12c1-4fdc-beb9-b21ed4df14f8",
+                                            "network_src_port_id": "311cd7c4-1285-4ad6-9e69-c36cf6f72355",
                                             "ip_dst_prefix": "10.0.0.17/32"
                                         }
                                     ]

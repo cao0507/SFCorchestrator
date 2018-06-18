@@ -1,0 +1,42 @@
+{
+    "name": "sfc1",
+    "operation": "create",
+    "VNF": [
+        {
+            "name": "vnf1",
+            "type": "FW_image",
+            "flavor": {
+                "cpu": 1,
+                "memory": "1000 MB",
+                "disk": "10 GB"
+            },
+            "rule": "mkdir /home/openstack/hello"
+        },
+        {
+            "name": "vnf2",
+            "type": "IDS_image",
+            "flavor": {
+                "cpu": 1,
+                "memory": "2000 M",
+                "disk": "15 GB"
+            },
+            "rule": "mkdir /home/openstack/hello"
+        }
+    ],
+    "constrain": [
+        {
+            "name": "cons1",
+            "former": "vnf1",
+            "later": "vnf2"
+        },
+        {
+            "name": "cons2",
+            "former": "vnf1",
+            "later": "vnf2"
+        }
+    ],
+    "QoS": {
+        "Bandwidth": "10 M",
+        "delay": "20 ms"
+    }
+}

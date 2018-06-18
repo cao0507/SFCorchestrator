@@ -4,7 +4,7 @@ import json
 class jsonparser(object):
     
     def __init__(self, filename):
-        f = open("sfc/"+filename+".json")
+        f = open("sfc/"+filename)
         self.req = json.load(f)
         f.close()
 

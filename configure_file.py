@@ -1,5 +1,5 @@
 import json
-from parse_request import jsonparser
+#from parse_request import jsonparser
 
 class configure_file(object):
     #def __init__(self, file_name):
@@ -32,7 +32,7 @@ class configure_file(object):
         connection_point = []
         constituent_vnfs = []
         dependent_virtual_link = []
-        for vnf in sfc["chain"]:
+        for vnf in sfc_orchestrator["chain"]:
             path.append({"capability": "CP1", "forwarder": sfc_orchestrator["name"] + "_" + vnf + "_Description"})
             connection_point.append("CP1")
             constituent_vnfs.append(sfc_orchestrator["name"] + "_" + vnf + "_Description")
