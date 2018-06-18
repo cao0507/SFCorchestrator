@@ -25,12 +25,28 @@ def create(sfc_file):
 
     req = jsonparser(sfc_file)
     vnf_name_list = req.get_vnf_list()
+    constrains = req.get_constrain_list()
+    chain = orchestrator.orchestrate(vnf_name_list, constrains)
+
+    sfc_detail = []
+    for vnf in vnf_name_list:
+        vnf_detail = req.get_vnf_by_name(vnf)
+        vnf_detail_brief = {}
+        vnf_detail_brief["name"] = vnf_detail["name"]
+        vnf_detail_brief["cpu"] = vnf_detail["flavor"]["cpu"]
+        vnf_detail_brief["memory"] = vnf_detail["flavor"]["memory"]
+        vnf_detail_brief["disk"] = vnf_detail["flavor"]["disk"]
+        sfc_detail.append(vnf_detail_brief)
+    target = req.get_sfc_target()
+    hosts = 
+    mapper_output = mapper.mapper
+    
     sfc_name = req.get_sfc_name()
     sfc_mapper = {}
-    mapper_output = {
-        "vnf1": "nova:compute2",
-        "vnf2": "nova:compute1"
-    }
+    # mapper_output = {
+    #     "vnf1": "nova:compute2",
+    #     "vnf2": "nova:compute1"
+    # }
     sfc_mapper["name"] = sfc_name
     sfc_mapper["mapper"] = mapper_output
     conf = configure_file()
@@ -45,8 +61,6 @@ def create(sfc_file):
     # configute vnffgd file
     sfc_orchestrator = {}
     sfc_orchestrator["name"] = sfc_name
-    constrains = req.get_constrain_list()
-    chain = orchestrator.orchestrate(vnf_name_list, constrains)
     sfc_orchestrator["chain"] = chain
     vnffgd_file = conf.configure_vnffgd(sfc_orchestrator)
     
