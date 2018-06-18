@@ -36,3 +36,6 @@ class jsonparser(object):
 
     def get_qos(self):
         return self.req["QoS"]
+
+    def get_sfc_target(self):
+        return self.req["target"]
