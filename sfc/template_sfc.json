@@ -28,16 +28,11 @@
             "name": "cons1",
             "former": "vnf1",
             "later": "vnf2"
-        },
-        {
-            "name": "cons2",
-            "former": "vnf1",
-            "later": "vnf2"
         }
     ],
     "QoS": {
         "bandwidth": 10,
         "delay": 2
     },
-    "target": "cpu"
+    "objective": "cpu"
 }

@@ -24,14 +24,17 @@ def create(sfc_file):
     print "\n===================================================================="
     print "====================================================================\n"
 
+    # Instantiation
     req = jsonparser(sfc_file)
     hypervisor_instance = hypervisor()
     conf = configure_file()
 
+    # Orchestration
     vnf_name_list = req.get_vnf_list()
     constrains = req.get_constrain_list()
     chain = orchestrator.orchestrate(vnf_name_list, constrains)
 
+    # Mapping
     sfc_detail = []
     for vnf in vnf_name_list:
         vnf_detail = req.get_vnf_by_name(vnf)
@@ -41,11 +44,12 @@ def create(sfc_file):
         vnf_detail_brief["memory"] = vnf_detail["flavor"]["memory"]
         vnf_detail_brief["disk"] = vnf_detail["flavor"]["disk"]
         sfc_detail.append(vnf_detail_brief)
-    target = req.get_sfc_target()
+    objective = req.get_sfc_objective()
     hosts = hypervisor_instance.get_hosts_detail()
-    mapper_output = mapper.sfc_mapper(sfc_detail, hosts, target)
+    mapper_output = mapper.sfc_mapper(sfc_detail, hosts, objective)
     print mapper_output    
 
+    # Construct sfc deploy information
     sfc_name = req.get_sfc_name()
     sfc_mapper = {}
     sfc_mapper["name"] = sfc_name
