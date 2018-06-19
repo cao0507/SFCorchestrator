@@ -21,6 +21,10 @@ class vnf(object):
             if vnf["name"] == vnf_name:
                 return vnf["id"]
 
+    def get_vnf_status(self, vnf_name):
+        vnf_info = self.show_vnf(vnf_name)
+        return vnf_info["vnf"]["status"]
+
     def create_vnf(self, vnf_name, vnfd_id):
         values = {
             "vnf": {
@@ -36,25 +40,31 @@ class vnf(object):
             print "Creating %s meets ERROR!" % vnf_name
 
     def show_vnf(self, vnf_name):
-        vnf_id = self.get_vnf_id(vnf_name)
-        url = self.url + "/" + vnf_id
-        r = self.requests.get(url).json()
-        json_r = json.dumps(r, sort_keys=True, indent=4, separators=(',',': '))
-        print json_r
-
+        try:
+            vnf_id = self.get_vnf_id(vnf_name)
+            url = self.url + "/" + vnf_id
+            r = self.requests.get(url).json()
+            return r
+            # json_r = json.dumps(r, sort_keys=True, indent=4, separators=(',',': '))
+            # return json_r
+        except TypeError:
+            print "There is not VNF named %s." % vnf_name
 
     def delete_vnf(self, vnf_name):
-        vnf_id = self.get_vnf_id(vnf_name)
-        url = self.url + "/" + vnf_id
-        r = self.requests.delete(url)
-        if "204" in str(r):
-            print "The VNF:%s was deleted successfully!" % vnf_name
-        elif "404" in str(r):
-            print "%s was Not Found!" % vnf_name
-        elif "401" in str(r):
-            print "Your action was Unauthorized!"
-        else:
-            print "Other ERROR"
+        try:
+            vnf_id = self.get_vnf_id(vnf_name)
+            url = self.url + "/" + vnf_id
+            r = self.requests.delete(url)
+            if "204" in str(r):
+                print "The VNF:%s was deleted successfully!" % vnf_name
+            elif "404" in str(r):
+                print "%s was Not Found!" % vnf_name
+            elif "401" in str(r):
+                print "Your action was Unauthorized!"
+            else:
+                print "Other ERROR"
+        except TypeError:
+            print "There is not VNF named %s." % vnf_name
 
 
 class vnfd(object):
@@ -128,6 +138,10 @@ class vnffg(object):
             if vnffg["name"] == vnffg_name:
                 return vnffg["id"]
 
+    def get_vnffg_status(self, vnffg_name):
+        vnffg_info = self.show_vnffg(vnffg_name)
+        return vnffg_info["status"]
+
     def create_vnffg(self, vnffg_name, vnffgd_id, vnf_mapping):
         values = {
             "vnffg": {
@@ -144,13 +158,12 @@ class vnffg(object):
         else:
             print "Creating %s meets ERROR!" % vnffg_name
 
-
     def show_vnffg(self, vnffg_name):
         vnffg_id = self.get_vnffg_id(vnffg_name)
         url = self.url + "/" + vnffg_id
         r = self.requests.get(url).json()
         json_r = json.dumps(r, sort_keys=True, indent=4, separators=(',',': '))
-        print json_r
+        return json_r
 
     def delete_vnffg(self, vnffg_name):
         vnffg_id = self.get_vnffg_id(vnffg_name)
