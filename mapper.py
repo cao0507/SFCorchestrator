@@ -1,4 +1,22 @@
+
+"""
+This module includes mapping algorithms of SFC.
+Any other mapping algorithm can be add here.
+"""
+
+
 def sfc_mapper(sfc, hosts, objective):
+    """A mapping algorithm of SFC.
+
+    description:
+    Construct the mapping relationship between
+    virtual machines and physical hosts.
+    
+    Keyword arguments:
+    sfc -- the list of SFs including flavor information
+    hosts -- the list of hosts including available resource information
+    objective -- the optimal objective of this mapping algorithm 
+    """
     mapper_result = {}
     if objective == "bandwidth" or objective == "delay":
         cpu = 0

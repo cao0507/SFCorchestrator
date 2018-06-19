@@ -1,4 +1,4 @@
 #!/bin/bash
 
 sudo rm *~
-sudo rm *c
+sudo rm *.pyc

@@ -7,7 +7,7 @@ Any other orchestration alogrithm can be added here.
 
 def orchestrate(vnfs, cons):
     """A simple orchestration algorithm.
-
+    
     Keyword arguments:
     vnfs -- the list of VNFs to be orchestrated
     cons -- the list of sequence constrains between two kinds of VNFs
