@@ -1,6 +1,6 @@
-def sfc_mapper(sfc, hosts, target):
+def sfc_mapper(sfc, hosts, objective):
     mapper_result = {}
-    if target == "bandwidth" or target == "delay":
+    if objective == "bandwidth" or objective == "delay":
         cpu = 0
         memory = 0
         disk = 0
@@ -53,10 +53,10 @@ def sfc_mapper(sfc, hosts, target):
                     print ("Error! No available host")
                     return {}
     else:
-        sorted_sfc = sorted(sfc, key=(lambda x: x[target]))
+        sorted_sfc = sorted(sfc, key=(lambda x: x[objective]))
         while sorted_sfc:
             sorted_hosts = sorted(hosts,
-                                  key=(lambda x: x[target]),
+                                  key=(lambda x: x[objective]),
                                   reverse=True)
             sf = sorted_sfc.pop()
             for i in range(len(sorted_hosts)):

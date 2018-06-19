@@ -14,6 +14,8 @@ def create(sfc_file):
     tacker_vnfd = tacker.vnfd()
     tacker_vnffg = tacker.vnffg()
     tacker_vnffgd = tacker.vnffgd()
+
+    # Instantiation
     req = jsonparser(sfc_file)
     hypervisor_instance = hypervisor()
     conf = configure_file()
@@ -22,6 +24,8 @@ def create(sfc_file):
 
     # list all the component of the sfc
     list_all(sfc_name)
+
+    # Orchestration
     vnf_name_list = req.get_vnf_list()
 
     constrains = req.get_constrain_list()
@@ -37,16 +41,20 @@ def create(sfc_file):
         vnf_detail_brief["memory"] = vnf_detail["flavor"]["memory"]
         vnf_detail_brief["disk"] = vnf_detail["flavor"]["disk"]
         sfc_detail.append(vnf_detail_brief)
-    target = req.get_sfc_target()
+    objective = req.get_sfc_objective()
     hosts = hypervisor_instance.get_hosts_detail()
 
     # configure vnfd files
     sfc_mapper = {}  # used for create vnfds
-    mapper_output = mapper.sfc_mapper(sfc_detail, hosts, target)
-    mapper_output = {
-        "vnf1":"nova:compute1",
-        "vnf2":"nova:compute1"
-    }
+    # mapper_output = {
+    #     "vnf1":"nova:compute1",
+    #     "vnf2":"nova:compute1"
+    # }
+    mapper_output = mapper.sfc_mapper(sfc_detail, hosts, objective)
+
+    # Construct sfc deploy information
+    sfc_name = req.get_sfc_name()
+    sfc_mapper = {}
     sfc_mapper["name"] = sfc_name
     sfc_mapper["mapper"] = mapper_output
     vnfd = []
