@@ -6,37 +6,34 @@ import mapper
 import orchestrator
 from openstack_api import hypervisor
 import time
+from list_all import list_all
 
 def create(sfc_file):
+    # instantiate work
     tacker_vnf = tacker.vnf()
     tacker_vnfd = tacker.vnfd()
     tacker_vnffg = tacker.vnffg()
     tacker_vnffgd = tacker.vnffgd()
 
-    print "\n**************The VNFs list.****************"
-    print tacker_vnf.list_vnf()
-    print "\n**************The VNFDs list.****************"
-    print tacker_vnfd.list_vnfd()
-    print "\n**************The VNFFGs list.****************"
-    print tacker_vnffg.list_vnffg()
-    print "\n**************The VNFFGDs list.****************"
-    print tacker_vnffgd.list_vnffgd()
-    print "\n===================================================================="
-    print "====================================================================\n"
-
     # Instantiation
     req = jsonparser(sfc_file)
     hypervisor_instance = hypervisor()
     conf = configure_file()
+    
+    sfc_name = req.get_sfc_name()  # The sfc name is the most important infomation!
+
+    # list all the component of the sfc
+    list_all(sfc_name)
 
     # Orchestration
     vnf_name_list = req.get_vnf_list()
+
     constrains = req.get_constrain_list()
     chain = orchestrator.orchestrate(vnf_name_list, constrains)
 
-    # Mapping
+    # get the input of mapper algorithm
     sfc_detail = []
-    for vnf in vnf_name_list:
+    for vnf in chain:
         vnf_detail = req.get_vnf_by_name(vnf)
         vnf_detail_brief = {}
         vnf_detail_brief["name"] = vnf_detail["name"]
@@ -46,17 +43,20 @@ def create(sfc_file):
         sfc_detail.append(vnf_detail_brief)
     objective = req.get_sfc_objective()
     hosts = hypervisor_instance.get_hosts_detail()
+
+    # configure vnfd files
+    sfc_mapper = {}  # used for create vnfds
+    # mapper_output = {
+    #     "vnf1":"nova:compute1",
+    #     "vnf2":"nova:compute1"
+    # }
     mapper_output = mapper.sfc_mapper(sfc_detail, hosts, objective)
-    print mapper_output    
 
     # Construct sfc deploy information
     sfc_name = req.get_sfc_name()
     sfc_mapper = {}
     sfc_mapper["name"] = sfc_name
     sfc_mapper["mapper"] = mapper_output
-    
-
-    # configure vnfd file
     vnfd = []
     for vnf in vnf_name_list:
         vnf_detail = req.get_vnf_by_name(vnf)
@@ -64,7 +64,7 @@ def create(sfc_file):
         vnfd.append(vnfd_file_name)
     
     # configute vnffgd file
-    sfc_orchestrator = {}
+    sfc_orchestrator = {}   # used for create vnffgd
     sfc_orchestrator["name"] = sfc_name
     sfc_orchestrator["chain"] = chain
     vnffgd_file = conf.configure_vnffgd(sfc_orchestrator)
@@ -72,6 +72,7 @@ def create(sfc_file):
     # create vnfds
     for vnfd_file in vnfd:
         tacker_vnfd.create_vnfd(vnfd_file)
+    time.sleep(2)
 
     # create vnfs
     for vnf in vnf_name_list:
@@ -79,10 +80,14 @@ def create(sfc_file):
         vnfd_name = sfc_name + "_" + vnf + "_Description"
         vnfd_id = tacker_vnfd.get_vnfd_id(vnfd_name)
         tacker_vnf.create_vnf(vnf_name, vnfd_id)
-        time.sleep(45)
+        time.sleep(5)
+        while tacker_vnf.get_vnf_status(vnf_name) != "ACTIVE":
+            print "VNF:%s is being creating!" % vnf_name
+            time.sleep(5)
     
     # create vnffgd
     tacker_vnffgd.create_vnffgd(vnffgd_file)
+    time.sleep(2)
 
     # create vnffg
     vnf_mapping = {}
@@ -97,16 +102,7 @@ def create(sfc_file):
     tacker_vnffg.create_vnffg(vnffg_name, vnffgd_id, vnf_mapping)
     time.sleep(10)
 
-    print "\n**************The VNFs list.****************"
-    print tacker_vnf.list_vnf()
-    print "\n**************The VNFDs list.****************"
-    print tacker_vnfd.list_vnfd()
-    print "\n**************The VNFFGs list.****************"
-    print tacker_vnffg.list_vnffg()
-    print "\n**************The VNFFGDs list.****************"
-    print tacker_vnffgd.list_vnffgd()
-    print "\n===================================================================="
-    print "====================================================================\n"
+    list_all(sfc_name)
 
 if __name__ == "__main__":
     create("sfc1.json")
