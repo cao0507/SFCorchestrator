@@ -2,10 +2,11 @@ import json
 import identity
 from openstack_requests import openstack_requests
 
+service_ip = "192.168.1.30" 
 
 class hypervisor(object):
     def __init__(self):
-        self.url = "http://192.168.1.30/compute/v2.1/os-hypervisors"
+        self.url = "http://" + service_ip + "/compute/v2.1/os-hypervisors"
         self.requests = openstack_requests()
 
     def get_hosts_detail(self):

@@ -1,34 +1,18 @@
 import json
 import requests
+import parse_platform
+
+service_ip = "192.168.1.30" 
 
 def get_token():
-    url = "http://192.168.1.30/identity/v3/auth/tokens"
-    values = {
-        "auth": {
-            "identity": {
-                "methods": [
-                    "password"
-                ],
-                "password": {
-                    "user": {
-                        "id": "ad51db7366fd49e29545602172da7747",
-                        "password": "openstack"
-                    }
-                }
-            },
-            "scope": {
-                "project": {
-                    "id": "884a98138b784608bdbb03ff3cb958fa"
-                }
-            }
-        }
-    }
-    data = json.dumps(values)
+    url = "http://" + service_ip + "/identity/v3/auth/tokens"
+    data = open("auth.json", "r")
     headers = {
         "Content-type": "application/json",
         "Accept": "application/json"
     }
     r = requests.post(url, data, headers=headers)
+    data.close()
     token = r.headers.get('X-Subject-Token')
     return token
 

@@ -4,7 +4,7 @@
         "name": "sfc1_vnffg_Description",
         "template": {
             "vnffgd": {
-                "description": "Sample VNFFG template",
+                "description": "sfc1vnffg",
                 "topology_template": {
                     "description": "Sample VNFFG template",
                     "groups": {
@@ -37,7 +37,7 @@
                         "Forwarding_path1": {
                             "description": "creates path (CP1->CP2)",
                             "properties": {
-                                "id": 51,
+                                "id": 70,
                                 "path": [
                                     {
                                         "capability": "CP1",
@@ -52,7 +52,7 @@
                                     "criteria": [
                                         {
                                             "ip_dst_prefix": "10.0.0.17/32",
-                                            "network_src_port_id": "311cd7c4-1285-4ad6-9e69-c36cf6f72355"
+                                            "network_src_port_id": "bc736e80-c50a-4c60-b9f9-8baebbe25f31"
                                         }
                                     ],
                                     "type": "ACL"
@@ -65,6 +65,6 @@
                 "tosca_definitions_version": "tosca_simple_profile_for_nfv_1_0_0"
             }
         },
-        "tenant_id": "884a98138b784608bdbb03ff3cb958fa"
+        "tenant_id": "15fc3f424e7b4f55848ca418887a5f0d"
     }
 }

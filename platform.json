@@ -1,0 +1,9 @@
+{
+    "type": "openstack",
+    "service_ip": "192.168.1.30",
+    "user_id": "069c9c6cbc9d4cefbfa0b411c7c57796",
+    "password": "openstack",
+    "tenant_id": "15fc3f424e7b4f55848ca418887a5f0d",
+    "src_port_id": "bc736e80-c50a-4c60-b9f9-8baebbe25f31",
+    "dst_ip": "10.0.0.17/32"
+}

@@ -80,7 +80,7 @@ def create(sfc_file):
         vnfd_name = sfc_name + "_" + vnf + "_Description"
         vnfd_id = tacker_vnfd.get_vnfd_id(vnfd_name)
         tacker_vnf.create_vnf(vnf_name, vnfd_id)
-        time.sleep(5)
+        time.sleep(20)
         while tacker_vnf.get_vnf_status(vnf_name) != "ACTIVE":
             print "VNF:%s is being creating!" % vnf_name
             time.sleep(5)

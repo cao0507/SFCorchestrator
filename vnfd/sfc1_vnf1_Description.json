@@ -39,9 +39,9 @@
                                 }
                             },
                             "properties": {
-                                "availability_zone": "nova:compute2",
+                                "availability_zone": "nova:compute1",
                                 "image": "FW_image",
-                                "user_data": "sudo iptables -A FORWORD -p icmp -j REJECT"
+                                "user_data": "echo 1 > /proc/sys/net/ipv4/ip_forward"
                             },
                             "type": "tosca.nodes.nfv.VDU.Tacker"
                         },
@@ -64,6 +64,6 @@
                 "service_type": "vnfd"
             }
         ],
-        "tenant_id": "884a98138b784608bdbb03ff3cb958fa"
+        "tenant_id": "15fc3f424e7b4f55848ca418887a5f0d"
     }
 }

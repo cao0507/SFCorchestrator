@@ -1,14 +1,16 @@
 import json
-#from parse_request import jsonparser
+import random
+from parse_platform import jsonparser
 
 class configure_file(object):
-    #def __init__(self, file_name):
-    #    self.req = jsonparser(file_name)
+    def __init__(self):
+        self.platform = jsonparser("platform.json")
 
     def configure_vnfd(self, vnf, sfc_mapper):  # sfc_mapper = {"name": "sfc1", "mapper": {"vnf1": "nova:compute2", "vnf2": "nova:compute1"}}
         f = open("vnfd/template_vnfd.json", 'r')
         vnfd_template = json.load(f)
         f.close()
+        vnfd_template["vnfd"]["tenant_id"] = self.platform.get_tenant_id()
         vnfd_template["vnfd"]["name"] = sfc_mapper["name"] + "_" +  vnf['name'] + "_Description"
         vnfd_template["vnfd"]["attributes"]["vnfd"]["topology_template"]["node_templates"]["VDU1"]["capabilities"]["nfv_compute"]["properties"]["num_cpus"] = vnf["flavor"]["cpu"]
         vnfd_template["vnfd"]["attributes"]["vnfd"]["topology_template"]["node_templates"]["VDU1"]["capabilities"]["nfv_compute"]["properties"]["mem_size"] = str(vnf["flavor"]["memory"]) + " MB"
@@ -38,8 +40,13 @@ class configure_file(object):
             constituent_vnfs.append(sfc_orchestrator["name"] + "_" + vnf + "_Description")
             dependent_virtual_link.append("VL1")
 
+        vnffgd_template["vnffgd"]["tenant_id"] = self.platform.get_tenant_id()
         vnffgd_template["vnffgd"]["name"] = sfc_orchestrator["name"] + "_vnffg_Description"
+        vnffgd_template["vnffgd"]["template"]["vnffgd"]["description"] = sfc_orchestrator["name"] + "vnffg" 
+        vnffgd_template["vnffgd"]["template"]["vnffgd"]["topology_template"]["node_templates"]["Forwarding_path1"]["properties"]["policy"]["criteria"][0]["network_src_port_id"] = self.platform.get_src_port_id()
+        vnffgd_template["vnffgd"]["template"]["vnffgd"]["topology_template"]["node_templates"]["Forwarding_path1"]["properties"]["policy"]["criteria"][0]["ip_dst_prefix"] = self.platform.get_dst_ip()
         vnffgd_template["vnffgd"]["template"]["vnffgd"]["topology_template"]["node_templates"]["Forwarding_path1"]["properties"]["path"] = path
+        vnffgd_template["vnffgd"]["template"]["vnffgd"]["topology_template"]["node_templates"]["Forwarding_path1"]["properties"]["id"] = random.randint(1,100)
         vnffgd_template["vnffgd"]["template"]["vnffgd"]["topology_template"]["groups"]["VNFFG1"]["properties"]["connection_point"] = connection_point
         vnffgd_template["vnffgd"]["template"]["vnffgd"]["topology_template"]["groups"]["VNFFG1"]["properties"]["constituent_vnfs"] = constituent_vnfs
         vnffgd_template["vnffgd"]["template"]["vnffgd"]["topology_template"]["groups"]["VNFFG1"]["properties"]["dependent_virtual_link"] = dependent_virtual_link
