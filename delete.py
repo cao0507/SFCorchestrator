@@ -1,10 +1,23 @@
-import json
-import tacker
+
+"""
+This module is used to delete an existed SFC
+according to request json file.
+"""
+
 import time
-from parse_request import jsonparser
+
 from list_all import list_all
 
+from parse_request import jsonparser
+
+import tacker
+
+
 def delete(sfc_file):
+    """The function executes SFC delete action.
+
+    :param sfc_file: the filename of SFC to be deleted
+    """
     tacker_vnf = tacker.vnf()
     tacker_vnfd = tacker.vnfd()
     tacker_vnffg = tacker.vnffg()
@@ -39,7 +52,6 @@ def delete(sfc_file):
             tacker_vnfd.delete_vnfd(vnfd_name)
             time.sleep(2)
 
-
     # delete vnffgd
     for vnffgd_name in vnffgd_name_list:
         if sfc_name in vnffgd_name:
@@ -47,6 +59,7 @@ def delete(sfc_file):
             time.sleep(2)
 
     list_all(sfc_name)
+
 
 if __name__ == "__main__":
     delete("sfc1.json")

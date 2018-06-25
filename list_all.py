@@ -1,6 +1,14 @@
+
+"""
+This module is used to list all information of
+VNFs, VNFDs, VNFFGs and VNFFGDs.
+"""
+
 import tacker
 
-def list_all(sfc_name):
+
+def list_all():
+    """The function list all information currently."""
     tacker_vnf = tacker.vnf()
     tacker_vnfd = tacker.vnfd()
     tacker_vnffg = tacker.vnffg()
@@ -18,4 +26,4 @@ def list_all(sfc_name):
     print "====================================================================\n"
 
 if __name__ == "__main__":
-    list_all("sfc1")
+    list_all()
