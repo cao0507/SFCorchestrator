@@ -1,0 +1,19 @@
+{
+    "vim": {
+        "description": "The Openstack Virtualized Infrastructure Manager",
+        "name": "openstack-vim",
+        "is_default": true,
+        "auth_cred": {
+            "username": "admin",
+            "user_domain_name": "Default",
+            "password": "openstack",
+            "cert_verify": "True"
+        },
+        "auth_url": "http://192.168.1.30/identity",
+        "type": "openstack",
+        "vim_project": {
+            "name": "demo",
+            "project_domain_name": "Default"
+        }
+    }
+}

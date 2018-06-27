@@ -4,13 +4,12 @@
 import os
 import shutil
 
-import create
+from operation.create import create
+from operation.delete import delete
+#from operation.update import update
 
-import delete
+from parse_file.parse_request import jsonparser
 
-from parse_request import jsonparser
-
-import update
 
 
 def deploy(template_sfc_file):
@@ -20,18 +19,27 @@ def deploy(template_sfc_file):
     """
     req = jsonparser(template_sfc_file)
     operation = req.get_sfc_operation()
+    sfc_name = req.get_sfc_name()
     if operation == "create":
-        sfc_file = req.get_sfc_name() + ".json"
-        shutil.copyfile("sfc/"+template_sfc_file, "sfc/"+sfc_file)
-        create.create(sfc_file)
+        sfc_file = sfc_name + ".json"
+        shutil.copyfile("json/sfc/"+template_sfc_file, "json/sfc/"+sfc_file)
+        create(sfc_file)
+
     elif operation == "delete":
-        sfc_file = req.get_sfc_name() + ".json"
-        delete.delete(sfc_file)
-        os.remove("sfc/" + sfc_file)
+        sfc_file = sfc_name + ".json"
+        delete(sfc_file)
+        os.remove("json/sfc/" + sfc_file)
+        for vnfd_description_file in os.listdir("json/vnfd/"):
+            if sfc_name in vnfd_description_file:
+                os.remove("json/vnfd/" + vnfd_description_file)
+        for vnffgd_description_file in os.listdir("json/vnffgd/"):
+            if sfc_name in vnffgd_description_file:
+                os.remove("json/vnffgd/" + vnffgd_description_file)
+
     else:
-        sfc_file = req.get_sfc_name() + ".json"
+        sfc_file = sfc_name + ".json"
         compare_output_file = compare_file(template_sfc_file, sfc_file)
-        update.update(compare_output_file)
+        update(compare_output_file)
 
         
 if __name__ == '__main__':

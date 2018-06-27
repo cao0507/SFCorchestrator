@@ -1,0 +1,69 @@
+{
+    "vnfd": {
+        "attributes": {
+            "vnfd": {
+                "tosca_definitions_version": "tosca_simple_profile_for_nfv_1_0_0",
+                "description": "Demo example",
+                "topology_template": {
+                    "node_templates": {
+                        "VDU1": {
+                            "type": "tosca.nodes.nfv.VDU.Tacker",
+                            "properties": {
+                                "image": "ubuntu",
+                                "user_data": "#!//bin//sh;/necho 1 > //proc//sys//net//ipv4//ip_forward;/nmkdir //home//openstack//helllo",
+                                "availability_zone": "nova:compute1"
+                            },
+                            "capabilities": {
+                                "nfv_compute": {
+                                    "properties": {
+                                        "mem_size": "1000 MB",
+                                        "num_cpus": 1,
+                                        "disk_size": "10 GB"
+                                    }
+                                }
+                            }
+                        },
+                        "CP1": {
+                            "type": "tosca.nodes.nfv.CP.Tacker",
+                            "requirements": [
+                                {
+                                    "virtualLink": {
+                                        "node": "VL1"
+                                    }
+                                },
+                                {
+                                    "virtualBinding": {
+                                        "node": "VDU1"
+                                    }
+                                }
+                            ],
+                            "properties": {
+                                "anti_spoofing_protection": false,
+                                "management": true,
+                                "order": 0
+                            }
+                        },
+                        "VL1": {
+                            "type": "tosca.nodes.nfv.VL",
+                            "properties": {
+                                "vendor": "Tacker",
+                                "network_name": "private"
+                            }
+                        }
+                    }
+                },
+                "metadata": {
+                    "template_name": "sample-tosca-vnfd"
+                }
+            }
+        },
+        "service_types": [
+            {
+                "service_type": "vnfd"
+            }
+        ],
+        "tenant_id": "5ccb248ea8a0432c918eb09b1c4767ed",
+        "description": "Sample",
+        "name": "VNFD1"
+    }
+}

@@ -1,0 +1,8 @@
+service_ip = "192.168.1.30"
+user_name = "admin"
+user_id = "72df26923f244d62bf084933eb967a3f"
+password = "openstack"
+tenant_name = "demo"  # tenant is the same as project
+tenant_id = "5ccb248ea8a0432c918eb09b1c4767ed"
+src_port_id = "8591fa39-3fdb-40d5-b80c-928f90325598"
+dst_ip = "10.0.0.17/32"
