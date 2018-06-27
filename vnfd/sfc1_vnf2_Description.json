@@ -2,18 +2,28 @@
     "vnfd": {
         "attributes": {
             "vnfd": {
-                "description": "Demo example",
-                "metadata": {
-                    "template_name": "sample-tosca-vnfd"
-                },
+                "tosca_definitions_version": "tosca_simple_profile_for_nfv_1_0_0",
                 "topology_template": {
                     "node_templates": {
-                        "CP1": {
+                        "VDU1": {
+                            "type": "tosca.nodes.nfv.VDU.Tacker",
                             "properties": {
-                                "anti_spoofing_protection": false,
-                                "management": true,
-                                "order": 0
+                                "image": "IDS_image",
+                                "user_data": "#!/bin/bash\n echo 'IDS user_data import successfully!' > /home/openstack/test.log\n rm /etc/snort/rules/local.rules\n echo alert tcp !10.0.0.0/26 any -> 10.0.0.0/26 22 (flags: S; msg:'Possible TCP DoS'; flow: stateless; threshold: type both, track by_src, count 70, seconds 10; sid:10001;rev:1;) >/etc/snort/rules/local.rules\n snort -T -c /etc/snort/snort.conf -i eth0\n /usr/local/bin/snort -A console -q -u snort -g snort -c /etc/snort/snort.conf -i eth0 >/home/openstack/snort.log",
+                                "availability_zone": "nova:compute2"
                             },
+                            "capabilities": {
+                                "nfv_compute": {
+                                    "properties": {
+                                        "mem_size": "1000 MB",
+                                        "num_cpus": 1,
+                                        "disk_size": "15 GB"
+                                    }
+                                }
+                            }
+                        },
+                        "CP1": {
+                            "type": "tosca.nodes.nfv.CP.Tacker",
                             "requirements": [
                                 {
                                     "virtualLink": {
@@ -26,44 +36,34 @@
                                     }
                                 }
                             ],
-                            "type": "tosca.nodes.nfv.CP.Tacker"
-                        },
-                        "VDU1": {
-                            "capabilities": {
-                                "nfv_compute": {
-                                    "properties": {
-                                        "disk_size": "15 GB",
-                                        "mem_size": "2000 MB",
-                                        "num_cpus": 1
-                                    }
-                                }
-                            },
                             "properties": {
-                                "availability_zone": "nova:compute2",
-                                "image": "IDS_image",
-                                "user_data": "echo 1 > /proc/sys/net/ipv4/ip_forward"
-                            },
-                            "type": "tosca.nodes.nfv.VDU.Tacker"
+                                "anti_spoofing_protection": false,
+                                "management": true,
+                                "order": 0
+                            }
                         },
                         "VL1": {
+                            "type": "tosca.nodes.nfv.VL",
                             "properties": {
-                                "network_name": "private",
-                                "vendor": "Tacker"
-                            },
-                            "type": "tosca.nodes.nfv.VL"
+                                "vendor": "Tacker",
+                                "network_name": "private"
+                            }
                         }
                     }
                 },
-                "tosca_definitions_version": "tosca_simple_profile_for_nfv_1_0_0"
+                "description": "Demo example",
+                "metadata": {
+                    "template_name": "sample-tosca-vnfd"
+                }
             }
         },
-        "description": "Sample",
-        "name": "sfc1_vnf2_Description",
         "service_types": [
             {
                 "service_type": "vnfd"
             }
         ],
-        "tenant_id": "15fc3f424e7b4f55848ca418887a5f0d"
+        "tenant_id": "5ccb248ea8a0432c918eb09b1c4767ed",
+        "description": "Sample",
+        "name": "sfc1_vnf2_Description"
     }
 }

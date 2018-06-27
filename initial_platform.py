@@ -56,25 +56,36 @@ def initial_platform(file_name):
     f.write(file_data)
     f.close()
 
+    # initial the auth_url in the vim template file
+    f = open("vim/template_vim.json", 'r')
+    vim_template = json.load(f)
+    f.close()
+    vim_template["vim"]["auth_url"] = "http://" + service_ip + "/indentity" 
+    f = open("vim/template_vim.json", 'w')
+    data = json.dumps(vim_template, sort_keys=True, indent=4, separators=(',',': '))
+    f.write(data)
+    f.close()
+
+    
     # initial the tenant_id in the vnfd template file
-#    f = open("vnfd/template_vnfd.json", 'r')
-#    vnfd_template = json.load(f)
-#    f.close()
-#    vnfd_template["vnfd"]["tenant_id"] = tenant_id
-#    f = open("vnfd/template_vnfd.json", 'w')
-#    data = json.dumps(vnfd_template, sort_keys=True, indent=4, separators=(',',': '))
-#    f.write(data)
-#    f.close()
-#
-#    # initial the tenant_id in the vnffgd template file
-#    f = open("vnffgd/template_vnffgd.json", 'r')
-#    vnffgd_template = json.load(f)
-#    f.close()
-#    vnffgd_template["vnffgd"]["tenant_id"] = tenant_id
-#    f = open("vnffgd/template_vnffgd.json", 'w')
-#    data = json.dumps(vnffgd_template, sort_keys=True, indent=4, separators=(',',': '))
-#    f.write(data)
-#    f.close()
+    f = open("vnfd/template_vnfd.json", 'r')
+    vnfd_template = json.load(f)
+    f.close()
+    vnfd_template["vnfd"]["tenant_id"] = tenant_id
+    f = open("vnfd/template_vnfd.json", 'w')
+    data = json.dumps(vnfd_template, sort_keys=True, indent=4, separators=(',',': '))
+    f.write(data)
+    f.close()
+
+    # initial the tenant_id in the vnffgd template file
+    f = open("vnffgd/template_vnffgd.json", 'r')
+    vnffgd_template = json.load(f)
+    f.close()
+    vnffgd_template["vnffgd"]["tenant_id"] = tenant_id
+    f = open("vnffgd/template_vnffgd.json", 'w')
+    data = json.dumps(vnffgd_template, sort_keys=True, indent=4, separators=(',',': '))
+    f.write(data)
+    f.close()
 
 if __name__ == "__main__":
     initial_platform("platform.json")

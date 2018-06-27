@@ -46,11 +46,12 @@ def create(sfc_file):
 
     # configure vnfd files
     sfc_mapper = {}  # used for create vnfds
-    # mapper_output = {
-    #     "vnf1":"nova:compute1",
-    #     "vnf2":"nova:compute1"
-    # }
+    #mapper_output = {
+    #    "vnf1":"nova:compute1",
+    #    "vnf2":"nova:compute2"
+    #}
     mapper_output = mapper.sfc_mapper(sfc_detail, hosts, objective)
+    print mapper_output
 
     # Construct sfc deploy information
     sfc_name = req.get_sfc_name()
@@ -80,9 +81,9 @@ def create(sfc_file):
         vnfd_name = sfc_name + "_" + vnf + "_Description"
         vnfd_id = tacker_vnfd.get_vnfd_id(vnfd_name)
         tacker_vnf.create_vnf(vnf_name, vnfd_id)
-        time.sleep(20)
+        time.sleep(10)
         while tacker_vnf.get_vnf_status(vnf_name) != "ACTIVE":
-            print "VNF:%s is being creating!" % vnf_name
+            print "VNF:%s is being created!" % vnf_name
             time.sleep(5)
     
     # create vnffgd

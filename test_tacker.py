@@ -1,9 +1,12 @@
 from tacker import vnf,vnfd,vnffg,vnffgd
+import time
+from configure_file import configure_file
 
 aa = vnf()
 bb = vnfd()
 cc = vnffg()
 dd = vnffgd()
+conf = configure_file()
 
 vnfs = aa.list_vnf()
 vnfds = bb.list_vnfd()
@@ -20,11 +23,11 @@ print "\n****************The VNFFGDs list.****************"
 print vnffgds
 print "\n====================================================================\n"
 
-vnf1_name = "vnf1"
+vnf1_name = "sfc1_vnf1"
 vnf2_name = "vnf2"
-vnfd1_name = "VNFD1"
+vnfd1_name = "sfc1_vnf1_Description"
 vnfd2_name = "VNFD2"
-vnfd1_file = "vnfd1.json"
+vnfd1_file = "sfc1_vnf1_Description.json"
 vnfd2_file = "vnfd2.json"
 vnffgd_file = "vnffgd.json"
 vnffg_name = "vnffg"
@@ -45,13 +48,28 @@ vnffgd_name = "VNFFGD"
 #bb.show_vnfd("VNFD1")
 #cc.show_vnffg("vnffg")
 #dd.show_vnffgd("vnffgd-test")
+vnf_detail = {
+    "name": "vnf1",
+    "type": "FW_image",
+    "flavor": {
+        "cpu": 1,
+        "memory": 1000,
+        "disk": 10
+    },
+    "rule": "mkdir /home/openstack/dfagdf\n echo 'test file' > /home/openstack/test.txt"
+}
+sfc_mapper = {"name": "sfc1", "mapper": {"vnf1": "nova:compute2"}}
+conf.configure_vnfd(vnf_detail, sfc_mapper)
+
+bb.create_vnfd(vnfd1_file)
+vnfd1_id = bb.get_vnfd_id(vnfd1_name)
+aa.create_vnf(vnf1_name, vnfd1_id)
+time.sleep(10)
+while aa.get_vnf_status(vnf1_name) != "ACTIVE":
+    print "VNF:%s is being created!" % vnf1_name
+    time.sleep(5)
 
 
-#bb.create_vnfd(vnfd1_file)
-#bb.create_vnfd(vnfd2_file)
-#
-#
-#aa.create_vnf(vnf1_name, vnfd1_name)
 #aa.create_vnf(vnf2_name, vnfd2_name)
 #
 #

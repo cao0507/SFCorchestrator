@@ -1,26 +1,43 @@
 {
     "vnffgd": {
-        "tenant_id": "15fc3f424e7b4f55848ca418887a5f0d",
+        "description": "sample vnffgd",
         "name": "VNFFGD",
         "template": {
             "vnffgd": {
-                "tosca_definitions_version": "tosca_simple_profile_for_nfv_1_0_0",
                 "description": "Sample VNFFG template",
                 "topology_template": {
+                    "description": "Sample VNFFG template",
+                    "groups": {
+                        "VNFFG1": {
+                            "description": "HTTP to Corporate Net",
+                            "members": [
+                                "Forwarding_path1"
+                            ],
+                            "properties": {
+                                "connection_point": [
+                                    "CP1",
+                                    "CP2"
+                                ],
+                                "constituent_vnfs": [
+                                    "VNFD1",
+                                    "VNFD2"
+                                ],
+                                "dependent_virtual_link": [
+                                    "VL1",
+                                    "VL2"
+                                ],
+                                "number_of_endpoints": 2,
+                                "vendor": "tacker",
+                                "version": 1.0
+                            },
+                            "type": "tosca.groups.nfv.VNFFG"
+                        }
+                    },
                     "node_templates": {
                         "Forwarding_path1": {
-                            "type": "tosca.nodes.nfv.FP.Tacker",
                             "description": "creates path (CP1->CP2)",
                             "properties": {
-                                "policy": {
-                                    "type": "ACL",
-                                    "criteria": [
-                                        {
-                                            "network_src_port_id": "bc736e80-c50a-4c60-b9f9-8baebbe25f31",
-                                            "ip_dst_prefix": "10.0.0.17/32"
-                                        }
-                                    ]
-                                },
+                                "id": 51,
                                 "path": [
                                     {
                                         "capability": "CP1",
@@ -31,40 +48,23 @@
                                         "forwarder": "VNFD2"
                                     }
                                 ],
-                                "id": 51
-                            }
-                        }
-                    },
-                    "description": "Sample VNFFG template",
-                    "groups": {
-                        "VNFFG1": {
-                            "type": "tosca.groups.nfv.VNFFG",
-                            "description": "HTTP to Corporate Net",
-                            "members": [
-                                "Forwarding_path1"
-                            ],
-                            "properties": {
-                                "vendor": "tacker",
-                                "connection_point": [
-                                    "CP1",
-                                    "CP2"
-                                ],
-                                "version": 1.0,
-                                "constituent_vnfs": [
-                                    "VNFD1",
-                                    "VNFD2"
-                                ],
-                                "number_of_endpoints": 2,
-                                "dependent_virtual_link": [
-                                    "VL1",
-                                    "VL2"
-                                ]
-                            }
+                                "policy": {
+                                    "criteria": [
+                                        {
+                                            "ip_dst_prefix": "10.0.0.17/32",
+                                            "network_src_port_id": "bc736e80-c50a-4c60-b9f9-8baebbe25f31"
+                                        }
+                                    ],
+                                    "type": "ACL"
+                                }
+                            },
+                            "type": "tosca.nodes.nfv.FP.Tacker"
                         }
                     }
-                }
+                },
+                "tosca_definitions_version": "tosca_simple_profile_for_nfv_1_0_0"
             }
         },
-        "description": "sample vnffgd"
+        "tenant_id": "5ccb248ea8a0432c918eb09b1c4767ed"
     }
 }

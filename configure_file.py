@@ -1,4 +1,5 @@
 import json
+import base64
 import random
 from parse_platform import jsonparser
 
@@ -10,17 +11,23 @@ class configure_file(object):
         f = open("vnfd/template_vnfd.json", 'r')
         vnfd_template = json.load(f)
         f.close()
+        if vnf["type"] == "FW_image":
+            user_data = "#!/bin/bash\n echo 'FW user_data import successfully!' > /home/openstack/test.log\n %s " % vnf["rule"]
+        elif vnf["type"] == "IDS_image":
+            user_data = "#!/bin/bash\n echo 'IDS user_data import successfully!' > /home/openstack/test.log\n rm /etc/snort/rules/local.rules\n echo %s >/etc/snort/rules/local.rules\n snort -T -c /etc/snort/snort.conf -i eth0\n /usr/local/bin/snort -A console -q -u snort -g snort -c /etc/snort/snort.conf -i eth0 >/home/openstack/snort.log" % vnf["rule"]
+        #print user_data
+        # user_data = base64.encodestring(user_data)
         vnfd_template["vnfd"]["tenant_id"] = self.platform.get_tenant_id()
         vnfd_template["vnfd"]["name"] = sfc_mapper["name"] + "_" +  vnf['name'] + "_Description"
         vnfd_template["vnfd"]["attributes"]["vnfd"]["topology_template"]["node_templates"]["VDU1"]["capabilities"]["nfv_compute"]["properties"]["num_cpus"] = vnf["flavor"]["cpu"]
         vnfd_template["vnfd"]["attributes"]["vnfd"]["topology_template"]["node_templates"]["VDU1"]["capabilities"]["nfv_compute"]["properties"]["mem_size"] = str(vnf["flavor"]["memory"]) + " MB"
         vnfd_template["vnfd"]["attributes"]["vnfd"]["topology_template"]["node_templates"]["VDU1"]["capabilities"]["nfv_compute"]["properties"]["disk_size"] = str(vnf["flavor"]["disk"]) + " GB"
         vnfd_template["vnfd"]["attributes"]["vnfd"]["topology_template"]["node_templates"]["VDU1"]["properties"]["image"] = vnf["type"]
-        vnfd_template["vnfd"]["attributes"]["vnfd"]["topology_template"]["node_templates"]["VDU1"]["properties"]["user_data"] = vnf["rule"]
+        vnfd_template["vnfd"]["attributes"]["vnfd"]["topology_template"]["node_templates"]["VDU1"]["properties"]["user_data"] = user_data
         vnfd_template["vnfd"]["attributes"]["vnfd"]["topology_template"]["node_templates"]["VDU1"]["properties"]["availability_zone"] = sfc_mapper["mapper"][vnf["name"]]
         vnfd_file = sfc_mapper["name"] + "_" + vnf['name'] + "_Description.json"
         f = open("vnfd/" + vnfd_file, 'w')
-        data = json.dumps(vnfd_template, sort_keys=True, indent=4, separators=(',',': '))
+        data = json.dumps(vnfd_template, sort_keys=False, indent=4, separators=(',',': '))
         f.write(data)
         f.close()
         return vnfd_file
@@ -52,7 +59,7 @@ class configure_file(object):
         vnffgd_template["vnffgd"]["template"]["vnffgd"]["topology_template"]["groups"]["VNFFG1"]["properties"]["dependent_virtual_link"] = dependent_virtual_link
         vnffgd_template["vnffgd"]["template"]["vnffgd"]["topology_template"]["groups"]["VNFFG1"]["properties"]["number_of_endpoints"] = len(sfc_orchestrator["chain"])       
         
-        data = json.dumps(vnffgd_template, sort_keys=True, indent=4, separators=(',',': '))
+        data = json.dumps(vnffgd_template, sort_keys=False, indent=4, separators=(',',': '))
         vnffgd_file = sfc_orchestrator["name"] + "_vnffg_Descrition.json"
         f = open("vnffgd/" + vnffgd_file, 'w')
         f.write(data)

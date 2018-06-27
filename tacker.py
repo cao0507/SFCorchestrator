@@ -88,7 +88,9 @@ class vnfd(object):
 
     def create_vnfd(self, vnfd_file):
         f = open("vnfd/" + vnfd_file, 'r')
-        r = self.requests.post(self.url, f)
+        values = json.load(f)
+        data = json.dumps(values)
+        r = self.requests.post(self.url, data)
         f.close()
         if "201" in str(r):
             vnfd_name = r.json()["vnfd"]["name"]
@@ -232,3 +234,60 @@ class vnffgd(object):
         else:
             print "Other ERROR"
 
+
+class vim(object):
+    def __init__(self):
+        self.url = "http://" + service_ip + ":9890/v1.0/vims"
+        self.requests = openstack_requests()
+
+    def list_vim(self):
+        r = self.requests.get(self.url).json()
+        vims = {}
+        for vim in r["vims"]:
+            vims[vim["name"].encode("utf-8")] = vim["id"].encode("utf-8")
+        return vims
+
+    def get_vim_id(self, vim_name):
+        r = self.requests.get(self.url).json()
+        for vim in r["vims"]:
+            if vim["name"] == vim_name:
+                return vim["id"]
+
+    def register_vim(self, vim_file):
+        f = open("vim/" + vim_file, 'r')
+        r = self.requests.post(self.url, f)
+        f.close()
+        if "201" in str(r):
+            print "The vim is created successfully!"
+        elif "400" in str(r):
+            print "Bad Request"
+        elif "401" in str(r):
+            print "Unauthorized"
+        elif "404" in str(r):
+            print "Not Found"
+        else:
+            print "Internal Server Error"
+
+    def show_vim(self, vim_name):
+        vim_id = self.get_vim_id(vim_name)
+        url = self.url + "/" + vim_id
+        r = self.requests.get(url).json()
+        json_r = json.dumps(r, sort_keys=True, indent=4, separators=(',',': '))
+        print json_r
+
+    def delete_vim(self, vim_name):
+        vim_id = self.get_vim_id(vim_name)
+        url = self.url + "/" + vim_id
+        r = self.requests.delete(url)
+        if "204" in str(r):
+            print "The VIM:%s was deleted successfully!" % vim_name
+        elif "404" in str(r):
+            print "%s was Not Found!" % vim_name
+        elif "401" in str(r):
+            print "Your action was Unauthorized!"
+        elif "409":
+            print "Conflict: This operation conflicted with another operation on this resource."
+        elif "500":
+            print "Internal Server Error: Something went wrong inside the service. This should not happen usually."
+        else:
+            print "Other Error"

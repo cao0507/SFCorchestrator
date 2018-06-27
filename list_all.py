@@ -7,13 +7,17 @@ def list_all(sfc_name):
     tacker_vnffgd = tacker.vnffgd()
 
     print "\n**************The VNFs list.****************"
-    print tacker_vnf.list_vnf()
+    for vnf in tacker_vnf.list_vnf():
+        print vnf
     print "\n**************The VNFDs list.****************"
-    print tacker_vnfd.list_vnfd()
+    for vnfd in tacker_vnfd.list_vnfd():
+        print vnfd
     print "\n**************The VNFFGs list.****************"
-    print tacker_vnffg.list_vnffg()
+    for vnffg in tacker_vnffg.list_vnffg():
+        print vnffg
     print "\n**************The VNFFGDs list.****************"
-    print tacker_vnffgd.list_vnffgd()
+    for vnffgd in tacker_vnffgd.list_vnffgd():
+        print vnffgd
     print "\n===================================================================="
     print "====================================================================\n"
 

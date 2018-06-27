@@ -2,18 +2,28 @@
     "vnfd": {
         "attributes": {
             "vnfd": {
-                "description": "Demo example",
-                "metadata": {
-                    "template_name": "sample-tosca-vnfd"
-                },
+                "tosca_definitions_version": "tosca_simple_profile_for_nfv_1_0_0",
                 "topology_template": {
                     "node_templates": {
-                        "CP1": {
+                        "VDU1": {
+                            "type": "tosca.nodes.nfv.VDU.Tacker",
                             "properties": {
-                                "anti_spoofing_protection": false,
-                                "management": true,
-                                "order": 0
+                                "image": "FW_image",
+                                "user_data": "#!/bin/bash\n echo 'FW user_data import successfully!' > /home/openstack/test.log\n sudo iptables -A FORWARD -p tcp --dport 22 -j REJECT ",
+                                "availability_zone": "nova:compute1"
                             },
+                            "capabilities": {
+                                "nfv_compute": {
+                                    "properties": {
+                                        "mem_size": "1000 MB",
+                                        "num_cpus": 1,
+                                        "disk_size": "10 GB"
+                                    }
+                                }
+                            }
+                        },
+                        "CP1": {
+                            "type": "tosca.nodes.nfv.CP.Tacker",
                             "requirements": [
                                 {
                                     "virtualLink": {
@@ -26,44 +36,34 @@
                                     }
                                 }
                             ],
-                            "type": "tosca.nodes.nfv.CP.Tacker"
-                        },
-                        "VDU1": {
-                            "capabilities": {
-                                "nfv_compute": {
-                                    "properties": {
-                                        "disk_size": "10 GB",
-                                        "mem_size": "1000 MB",
-                                        "num_cpus": 1
-                                    }
-                                }
-                            },
                             "properties": {
-                                "availability_zone": "nova:compute1",
-                                "image": "FW_image",
-                                "user_data": "echo 1 > /proc/sys/net/ipv4/ip_forward"
-                            },
-                            "type": "tosca.nodes.nfv.VDU.Tacker"
+                                "anti_spoofing_protection": false,
+                                "management": true,
+                                "order": 0
+                            }
                         },
                         "VL1": {
+                            "type": "tosca.nodes.nfv.VL",
                             "properties": {
-                                "network_name": "private",
-                                "vendor": "Tacker"
-                            },
-                            "type": "tosca.nodes.nfv.VL"
+                                "vendor": "Tacker",
+                                "network_name": "private"
+                            }
                         }
                     }
                 },
-                "tosca_definitions_version": "tosca_simple_profile_for_nfv_1_0_0"
+                "description": "Demo example",
+                "metadata": {
+                    "template_name": "sample-tosca-vnfd"
+                }
             }
         },
-        "description": "Sample",
-        "name": "sfc1_vnf1_Description",
         "service_types": [
             {
                 "service_type": "vnfd"
             }
         ],
-        "tenant_id": "15fc3f424e7b4f55848ca418887a5f0d"
+        "tenant_id": "5ccb248ea8a0432c918eb09b1c4767ed",
+        "description": "Sample",
+        "name": "sfc1_vnf1_Description"
     }
 }
