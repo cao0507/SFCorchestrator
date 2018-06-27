@@ -8,9 +8,9 @@ Any other orchestration alogrithm can be added here.
 def orchestrate(vnfs, cons):
     """A simple orchestration algorithm.
     
-    Keyword arguments:
-    vnfs -- the list of VNFs to be orchestrated
-    cons -- the list of sequence constrains between two kinds of VNFs
+    :param vnfs: the list of VNFs to be orchestrated
+    :param cons: the list of sequence constrains between two kinds of VNFs
+    :returns: the list of VNFs in the SFC which has satisfied the constrains
     """
     sfc = []
     for vnf in vnfs:
@@ -30,4 +30,3 @@ def orchestrate(vnfs, cons):
                     sfc.insert(k, vnf)
                     break
     return sfc
-
