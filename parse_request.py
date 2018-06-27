@@ -1,27 +1,40 @@
+
+"""
+This moudle provides a series of encapsuled API
+to parse the json file of SFC request.
+"""
+
 import json
 
 
 class jsonparser(object):
+    """The class is used to parse json file."""
     
     def __init__(self, filename):
+        """Class initialization."""
         f = open("sfc/"+filename)
         self.req = json.load(f)
         f.close()
 
     def get_vnf_list(self):
+        """Return the list of VNFs included SFC request."""
         return [vnf["name"] for vnf in self.req["VNF"]]
 
     def get_constrain_list(self):
+        """Return the list of sequence constrains between VNFs."""
         return [[cons["former"], cons["later"]]
                 for cons in self.req["constrain"]]
 
     def get_sfc_name(self):
+        """Return the name of SFC."""
         return self.req["name"]
 
     def get_sfc_operation(self):
+        """Return the expected operation. e.g. CREATE, DELETE and UPDATE."""
         return self.req["operation"]
 
     def get_vnf_by_name(self, name):
+        """Return vnf details which is specified by its name."""
         for vnf in self.req["VNF"]:
             if vnf["name"] == name:
                 return vnf
