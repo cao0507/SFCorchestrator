@@ -9,16 +9,16 @@
                         "VDU1": {
                             "type": "tosca.nodes.nfv.VDU.Tacker",
                             "properties": {
-                                "image": "ubuntu",
-                                "user_data": "#!//bin//sh;/necho 1 > //proc//sys//net//ipv4//ip_forward;/nmkdir //home//openstack//helllo",
-                                "availability_zone": "nova:compute1"
+                                "image": "IDS_image",
+                                "user_data": "\n            #!/bin/bash\n            echo 'IDS user_data import successfully!' > /home/openstack/test.log\n            rm /etc/snort/rules/local.rules\n            echo 'a\nl\ne\nr\nt\n \nt\nc\np\n \n!\n1\n0\n.\n0\n.\n0\n.\n0\n/\n2\n6\n \na\nn\ny\n \n-\n>\n \n1\n0\n.\n0\n.\n0\n.\n0\n/\n2\n6\n \n2\n2\n \n(\nf\nl\na\ng\ns\n:\n \nS\n;\n \nm\ns\ng\n:\n'\nP\no\ns\ns\ni\nb\nl\ne\n \nT\nC\nP\n \nD\no\nS\n'\n;\n \nf\nl\no\nw\n:\n \ns\nt\na\nt\ne\nl\ne\ns\ns\n;\n \nt\nh\nr\ne\ns\nh\no\nl\nd\n:\n \nt\ny\np\ne\n \nb\no\nt\nh\n,\n \nt\nr\na\nc\nk\n \nb\ny\n_\ns\nr\nc\n,\n \nc\no\nu\nn\nt\n \n7\n0\n,\n \ns\ne\nc\no\nn\nd\ns\n \n1\n0\n;\n \ns\ni\nd\n:\n1\n0\n0\n0\n1\n;\nr\ne\nv\n:\n1\n;\n)\n' >/etc/snort/rules/local.rules\n            snort -T -c /etc/snort/snort.conf -i eth0\n            /usr/local/bin/snort -A console -q -u snort -g snort -c /etc/snort/snort.conf -i eth0 >/home/openstack/snort.log\n            ",
+                                "availability_zone": "nova:compute2"
                             },
                             "capabilities": {
                                 "nfv_compute": {
                                     "properties": {
                                         "mem_size": "1000 MB",
                                         "num_cpus": 1,
-                                        "disk_size": "10 GB"
+                                        "disk_size": "15 GB"
                                     }
                                 }
                             }
@@ -64,6 +64,6 @@
         ],
         "tenant_id": "5ccb248ea8a0432c918eb09b1c4767ed",
         "description": "Sample",
-        "name": "VNFD1"
+        "name": "sfc1_vnf2_Description"
     }
 }

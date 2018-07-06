@@ -1,12 +1,14 @@
 
 """This module is a monitor of the cloud platform"""
 
+import os
 import sys
-sys.path.append(r"../../SFCorchestrator")
+sys.path.append(r"/home/openstack/SFCorchestrator")
 
 from api.openstack_api import server
 import time
 import json
+import config
 
 
 def server_status():
@@ -14,7 +16,8 @@ def server_status():
     available_server = server().list_avaiable_server()
     data = json.dumps(available_server,
                       sort_keys=True, indent=4, separators=(',', ': '))
-    f = open("../json/status/server_list.json", 'w')
+    file_path = config.abs_dir
+    f = open(file_path + "/json/status/server_list.json", 'w')
     f.write(data)
     f.close()
 

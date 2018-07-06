@@ -81,8 +81,8 @@ def create(sfc_file):
         tacker_vnf.create_vnf(vnf_name, vnfd_id)
         time.sleep(10)
         while tacker_vnf.get_vnf_status(vnf_name) != "ACTIVE":
-            print "VNF:%s is being created!" % vnf_name
             time.sleep(5)
+        print "%s's IP: %s" % (vnf_name, tacker_vnf.get_vnf_ip(vnf_name))
     
     # create vnffgd
     tacker_vnffgd.create_vnffgd(vnffgd_file)
@@ -99,7 +99,7 @@ def create(sfc_file):
     vnffgd_name = sfc_name + "_vnffg_Description"
     vnffgd_id = tacker_vnffgd.get_vnffgd_id(vnffgd_name)
     tacker_vnffg.create_vnffg(vnffg_name, vnffgd_id, vnf_mapping)
-    time.sleep(10)
+    time.sleep(5)
 
 
 if __name__ == "__main__":

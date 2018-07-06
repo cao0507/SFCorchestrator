@@ -15,7 +15,15 @@
                                     "criteria": [
                                         {
                                             "network_src_port_id": "8591fa39-3fdb-40d5-b80c-928f90325598",
-                                            "ip_dst_prefix": "10.0.0.17/32"
+                                            "ip_dst_prefix": "10.0.0.47/32"
+                                        },
+                                        {
+                                            "network_src_port_id": "6122ff78-0533-4e7a-a203-61fb0c4fabcd",
+                                            "ip_dst_prefix": "10.0.0.47/32"
+                                        },
+                                        {
+                                            "network_src_port_id": "0f636ebe-2630-4f9e-a2df-f7a961f80514",
+                                            "ip_dst_prefix": "10.0.0.47/32"
                                         }
                                     ]
                                 },
@@ -23,13 +31,9 @@
                                     {
                                         "capability": "CP1",
                                         "forwarder": "sfc1_vnf1_Description"
-                                    },
-                                    {
-                                        "capability": "CP1",
-                                        "forwarder": "sfc1_vnf2_Description"
                                     }
                                 ],
-                                "id": 41
+                                "id": 45
                             }
                         }
                     },
@@ -44,17 +48,14 @@
                             "properties": {
                                 "vendor": "tacker",
                                 "connection_point": [
-                                    "CP1",
                                     "CP1"
                                 ],
                                 "version": 1.0,
                                 "constituent_vnfs": [
-                                    "sfc1_vnf1_Description",
-                                    "sfc1_vnf2_Description"
+                                    "sfc1_vnf1_Description"
                                 ],
-                                "number_of_endpoints": 2,
+                                "number_of_endpoints": 1,
                                 "dependent_virtual_link": [
-                                    "VL1",
                                     "VL1"
                                 ]
                             }

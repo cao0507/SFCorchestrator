@@ -1,8 +1,7 @@
 import json
 import os
-
 from rest_api import api_request
-from config import service_ip
+from config import service_ip, abs_dir
 
 
 class vnf(object):
@@ -16,7 +15,7 @@ class vnf(object):
         for vnf in r["vnfs"]:
             vnfs[vnf["name"].encode("utf-8")] = vnf["id"].encode("utf-8")
         return vnfs
-     
+
     def get_vnf_id(self, vnf_name):
         r = self.requests.get(self.url).json()
         for vnf in r["vnfs"]:
@@ -26,6 +25,12 @@ class vnf(object):
     def get_vnf_status(self, vnf_name):
         vnf_info = self.show_vnf(vnf_name)
         return vnf_info["vnf"]["status"]
+
+    def get_vnf_ip(self, vnf_name):
+        vnf_info = self.show_vnf(vnf_name)
+        mgmt_url = vnf_info["vnf"]["mgmt_url"]
+        vnf_ip = json.loads(mgmt_url)["VDU1"]
+        return vnf_ip
 
     def create_vnf(self, vnf_name, vnfd_id):
         values = {
@@ -88,10 +93,7 @@ class vnfd(object):
                 return vnfd["id"]
 
     def create_vnfd(self, vnfd_file):
-        file_path = os.path.dirname(__file__)
-        if file_path is not '':
-            file_path = file_path + "/"
-        f = open(file_path + "../json/tacker/vnfd/" + vnfd_file, 'r')
+        f = open(abs_dir + "json/tacker/vnfd/" + vnfd_file, 'r')
         values = json.load(f)
         data = json.dumps(values)
         r = self.requests.post(self.url, data)
@@ -105,16 +107,16 @@ class vnfd(object):
             print "Unauthorized: user must authenticate before making a request."
         else:
             print "Internal Server Error."
-        
+
     def show_vnfd(self, vnfd_name):
-        vnfd_id = self.get_vnfd_id(vnfd_name) 
+        vnfd_id = self.get_vnfd_id(vnfd_name)
         url = self.url + "/" + vnfd_id
         r = self.requests.get(url).json()
         json_r = json.dumps(r, sort_keys=True, indent=4, separators=(',',': '))
         print json_r
 
     def delete_vnfd(self, vnfd_name):
-        vnfd_id = self.get_vnfd_id(vnfd_name) 
+        vnfd_id = self.get_vnfd_id(vnfd_name)
         url = self.url + "/" + vnfd_id
         r = self.requests.delete(url)
         if "204" in str(r):
@@ -155,7 +157,7 @@ class vnffg(object):
                 "name": vnffg_name,
                 "vnffgd_id": vnffgd_id,
                 "vnf_mapping": vnf_mapping,
-                "symmetrical": False 
+                "symmetrical": False
             }
         }
         data = json.dumps(values)
@@ -205,10 +207,7 @@ class vnffgd(object):
                 return vnffgd["id"]
 
     def create_vnffgd(self, vnffgd_file):
-        file_path = os.path.dirname(__file__)
-        if file_path is not '':
-            file_path = file_path + "/"
-        f = open(file_path + "../json/tacker/vnffgd/" + vnffgd_file, 'r')
+        f = open(abs_dir + "json/tacker/vnffgd/" + vnffgd_file, 'r')
         r = self.requests.post(self.url, f)
         f.close()
         if "201" in str(r):
@@ -220,7 +219,7 @@ class vnffgd(object):
             print "Unauthorized: user must authenticate before making a request."
         else:
             print "Internal Server Error."
-        
+
     def show_vnffgd(self, vnffgd_name):
         vnffgd_id = self.get_vnffgd_id(vnffgd_name)
         url = self.url + "/" + vnffgd_id
@@ -265,12 +264,9 @@ class vim(object):
         for vim in r["vims"]:
             if vim["is_default"] is True:
                 return vim
- 
+
     def register_vim(self, vim_file):
-        file_path = os.path.dirname(__file__)
-        if file_path is not '':
-            file_path = file_path + '/'
-        f = open(file_path + "../openstack_platform/" + vim_file, 'r')
+        f = open(abs_dir + "openstack_platform/" + vim_file, 'r')
         r = self.requests.post(self.url, f)
         f.close()
         if "201" in str(r):
@@ -289,7 +285,7 @@ class vim(object):
         url = self.url + "/" + vim_id
         r = self.requests.get(url).json()
         json_r = json.dumps(r, sort_keys=True, indent=4, separators=(',',': '))
-        print json_r
+        return json_r
 
     def delete_vim(self, vim_name):
         vim_id = self.get_vim_id(vim_name)

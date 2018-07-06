@@ -14,8 +14,13 @@
                                     "type": "ACL",
                                     "criteria": [
                                         {
-                                            "network_src_port_id": "bc736e80-c50a-4c60-b9f9-8baebbe25f31",
-                                            "ip_dst_prefix": "10.0.0.17/32"
+                                            "network_src_port_id": [
+                                                "8591fa39-3fdb-40d5-b80c-928f90325598",
+                                                "6122ff78-0533-4e7a-a203-61fb0c4fabcd"
+                                            ]
+                                        },
+                                        {
+                                            "ip_dst_prefix": "10.0.0.47/32"
                                         }
                                     ]
                                 },

@@ -13,8 +13,8 @@
                             "type": "tosca.nodes.nfv.VDU.Tacker",
                             "properties": {
                                 "image": "FW_image",
-                                "user_data": "#!/bin/bash\n echo 'FW user_data import successfully!' > /home/openstack/test.log\n sudo iptables -A FORWARD -p tcp --dport 22 -j REJECT ",
-                                "availability_zone": "nova:compute1"
+                                "user_data": "\n            #!/bin/bash\n            echo 'FW user_data import successfully!' > /home/openstack/test.log\n            sudo iptables -A FORWARD -p tcp --dport 22 -j REJECT\n            ",
+                                "availability_zone": "nova:compute2"
                             },
                             "capabilities": {
                                 "nfv_compute": {

@@ -1,8 +1,4 @@
-
 """This module provides a series of encapsuled openstack APIs"""
-
-import sys
-sys.path.append(r"/home/openstack/SFCorchestrator")
 
 from rest_api import api_request
 from config import service_ip
@@ -30,7 +26,7 @@ class hypervisor(object):
             hosts.append(host)
         return hosts
 
-    
+
 class server(object):
     """The class is about servers in the cloud platform."""
     
@@ -62,3 +58,22 @@ class server(object):
                 server["IP"] = self.get_serverIP(server["id"])
                 available_servers.append(server)
         return available_servers
+
+
+class usage_reports(object):
+    def __init__(self):
+        """class initialization"""
+        self.url = "http://" + service_ip + \
+            "/compute/v2.1/os-simple-tenant-usage"
+        self.requests = api_request()
+
+    def list_tenant_usage_statistics_for_all_tenants(self):
+        """List Tenant Usage Statistics For All Tenants"""
+        r = self.requests.get(self.url).json()
+        return r
+
+    def show_usage_statistics_for_tenant(self, tenant_id):
+        """Show usage statistics for tenant"""
+        url = self.url + "/" + tenant_id
+        r = self.requests.get(url).json()
+        return r

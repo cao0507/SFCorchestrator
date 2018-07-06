@@ -5,6 +5,8 @@ according to request json file.
 """
 
 import time
+import sys
+sys.path.append("/home/openstack/SFCorchestrator")
 
 from parse_file.parse_request import jsonparser
 

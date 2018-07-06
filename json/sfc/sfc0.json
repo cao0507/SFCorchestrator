@@ -1,0 +1,1 @@
+{"operation":"create","name":"sfc0","VNF":[{"name":"vnf1","type":"FW_image","flavor":{"cpu":"1","memory":"1000 ","disk":"10"},"rule":["iptables -A FORWARD -p tcp --dport 22 -m time --weekdays 1,2,3,4,5,6,7 -m time --timestart 00:00 --timestop 23:59 -m limit --limit 100/s -j REJECT"]}],"constrain":[],"QoS":{}}

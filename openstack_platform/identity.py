@@ -7,10 +7,8 @@ import config
 
 def get_token():
     url = "http://" + config.service_ip + "/identity/v3/auth/tokens"
-    file_path = os.path.dirname(__file__)
-    if file_path is not '':
-        file_path = file_path + "/"
-    data = open(file_path + "auth.json", "r")
+    file_path = config.abs_dir
+    data = open(file_path + "openstack_platform/auth.json", "r")
     headers = {
         "Content-type": "application/json",
         "Accept": "application/json"

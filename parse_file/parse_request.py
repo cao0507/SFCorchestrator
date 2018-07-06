@@ -6,6 +6,9 @@ to parse the json file of SFC request.
 
 import json
 import os
+import sys
+sys.path.append("/home/openstack/SFCorchestrator")
+import config
 
 
 class jsonparser(object):
@@ -13,8 +16,8 @@ class jsonparser(object):
     
     def __init__(self, filename):
         """Class initialization."""
-        file_path = os.path.abspath('.')
-        f = open(file_path + "/json/sfc/"+filename)
+        file_path = config.abs_dir
+        f = open(file_path + "json/sfc/"+filename)
         self.req = json.load(f)
         f.close()
 

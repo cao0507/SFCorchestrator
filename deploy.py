@@ -9,8 +9,7 @@ from operation.delete import delete
 #from operation.update import update
 
 from parse_file.parse_request import jsonparser
-
-
+from config import abs_dir
 
 def deploy(template_sfc_file):
     """The function executes SFC deployment operation.
@@ -22,19 +21,19 @@ def deploy(template_sfc_file):
     sfc_name = req.get_sfc_name()
     if operation == "create":
         sfc_file = sfc_name + ".json"
-        shutil.copyfile("json/sfc/"+template_sfc_file, "json/sfc/"+sfc_file)
+        shutil.copyfile(abs_dir + "json/sfc/"+template_sfc_file, abs_dir + "json/sfc/"+sfc_file)
         create(sfc_file)
 
     elif operation == "delete":
         sfc_file = sfc_name + ".json"
         delete(sfc_file)
-        os.remove("json/sfc/" + sfc_file)
-        for vnfd_description_file in os.listdir("json/vnfd/"):
+        os.remove(abs_dir + "json/sfc/" + sfc_file)
+        for vnfd_description_file in os.listdir(abs_dir + "json/tacker/vnfd/"):
             if sfc_name in vnfd_description_file:
-                os.remove("json/vnfd/" + vnfd_description_file)
-        for vnffgd_description_file in os.listdir("json/vnffgd/"):
+                os.remove(abs_dir + "json/tacker/vnfd/" + vnfd_description_file)
+        for vnffgd_description_file in os.listdir(abs_dir + "json/tacker/vnffgd/"):
             if sfc_name in vnffgd_description_file:
-                os.remove("json/vnffgd/" + vnffgd_description_file)
+                os.remove(abs_dir + "json/tacker/vnffgd/" + vnffgd_description_file)
 
     else:
         sfc_file = sfc_name + ".json"

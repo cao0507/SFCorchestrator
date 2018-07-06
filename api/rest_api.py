@@ -1,7 +1,9 @@
 import json
 import requests
+from config import abs_dir
+
 import sys
-sys.path.append(r"/home/openstack/SFCorchestrator")
+sys.path.append(abs_dir)
 
 from openstack_platform.identity import get_token
 

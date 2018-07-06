@@ -13,7 +13,7 @@
                             "type": "tosca.nodes.nfv.VDU.Tacker",
                             "properties": {
                                 "image": "IDS_image",
-                                "user_data": "#!/bin/bash\n echo 'IDS user_data import successfully!' > /home/openstack/test.log\n rm /etc/snort/rules/local.rules\n echo alert tcp !10.0.0.0/26 any -> 10.0.0.0/26 22 (flags: S; msg:'Possible TCP DoS'; flow: stateless; threshold: type both, track by_src, count 70, seconds 10; sid:10001;rev:1;) >/etc/snort/rules/local.rules\n snort -T -c /etc/snort/snort.conf -i eth0\n /usr/local/bin/snort -A console -q -u snort -g snort -c /etc/snort/snort.conf -i eth0 >/home/openstack/snort.log",
+                                "user_data": "\n            #!/bin/bash\n            echo 'IDS user_data import successfully!' > /home/openstack/test.log\n            rm /etc/snort/rules/local.rules\n            echo 'alert tcp !10.0.0.0/26 any -> 10.0.0.0/26 22 (flags: S; msg:'Possible TCP DoS'; flow: stateless; threshold: type both, track by_src, count 70, seconds 10; sid:10001;rev:1;)' >/etc/snort/rules/local.rules\n            snort -T -c /etc/snort/snort.conf -i eth0\n            /usr/local/bin/snort -A console -q -u snort -g snort -c /etc/snort/snort.conf -i eth0 >/home/openstack/snort.log\n            ",
                                 "availability_zone": "nova:compute2"
                             },
                             "capabilities": {
